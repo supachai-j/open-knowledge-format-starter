@@ -1,0 +1,18 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Raw sources are often large or private — keep the folder, ignore real contents.
+# Comment these out if you WANT to version your sources.
+raw/*
+!raw/README.md
+!raw/.gitkeep

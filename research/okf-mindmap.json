@@ -1,0 +1,121 @@
+{
+  "name": "Knowledge Activation & AI Skills",
+  "children": [
+    {
+      "name": "Core Frameworks",
+      "children": [
+        {
+          "name": "Knowledge Activation",
+          "children": [
+            { "name": "Codification" },
+            { "name": "Compression" },
+            { "name": "Injection" }
+          ]
+        },
+        {
+          "name": "Atomic Knowledge Units (AKU)",
+          "children": [
+            { "name": "Intent Declaration" },
+            { "name": "Procedural Knowledge" },
+            { "name": "Tool Bindings" },
+            { "name": "Governance & Validators" }
+          ]
+        },
+        {
+          "name": "Open Knowledge Format (OKF)",
+          "children": [
+            { "name": "Markdown-First" },
+            { "name": "YAML Frontmatter" },
+            { "name": "Concept Bundles" },
+            { "name": "LLM Wiki Pattern" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Problem Space",
+      "children": [
+        {
+          "name": "Institutional Impedance Mismatch",
+          "children": [
+            { "name": "Tacit vs Explicit Knowledge" },
+            { "name": "Last-Mile Delivery Gap" }
+          ]
+        },
+        {
+          "name": "Context Window Economy",
+          "children": [
+            { "name": "Token Budget" },
+            { "name": "Attention Decay" },
+            { "name": "Latency Cost" }
+          ]
+        },
+        {
+          "name": "Inadequacy of RAG",
+          "children": [
+            { "name": "Chunking Artifacts" },
+            { "name": "Embedding Drift" },
+            { "name": "Black Box Problem" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Architecture & Tools",
+      "children": [
+        {
+          "name": "Agent Knowledge Architecture",
+          "children": [
+            { "name": "AKU Registry" },
+            { "name": "Knowledge Topology" },
+            { "name": "Activation Policy" }
+          ]
+        },
+        {
+          "name": "Persistent Memory Layers",
+          "children": [
+            { "name": "Supermemory AI" },
+            { "name": "Memograph" },
+            { "name": "Hippo (Biologically Inspired)" }
+          ]
+        },
+        {
+          "name": "Infrastructure Standards",
+          "children": [
+            { "name": "Model Context Protocol (MCP)" },
+            { "name": "Obsidian-Native Vaults" },
+            { "name": "AgentFS (SQLite-backed)" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Implementation & Methodology",
+      "children": [
+        {
+          "name": "Markdown-First Semantics",
+          "children": [
+            { "name": "Entity Disambiguation" },
+            { "name": "Hidden Context Injection" },
+            { "name": "Invisible Headers" }
+          ]
+        },
+        {
+          "name": "AI-Generated Golden Paths",
+          "children": [
+            { "name": "Dynamic Workflow Composition" },
+            { "name": "Standardized Skills" }
+          ]
+        },
+        {
+          "name": "Governance & Quality",
+          "children": [
+            { "name": "Deterministic Validators" },
+            { "name": "Governance Gradient" },
+            { "name": "Knowledge Density Optimization" }
+          ]
+        }
+      ]
+    }
+  ]
+}
