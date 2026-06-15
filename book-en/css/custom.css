@@ -89,7 +89,13 @@
 @media print {
   /* no page-break here: mdBook already starts each chapter on a fresh page; adding our
      own break double-broke and left a blank page before the TOC. */
-  .okf-tocpage ul { list-style: none; padding-left: 0.4rem; }
+  /* tighten so all entries fit on ONE page (EN entries were spilling 2 lines over) */
+  .okf-tocpage { line-height: 1.4; font-size: 0.95rem; }
+  .okf-tocpage h1 { margin-bottom: 0.4rem; }
+  .okf-tocpage p { margin: 0.45rem 0 0.05rem; }
+  .okf-tocpage strong { font-size: 0.97rem; }
+  .okf-tocpage ul { list-style: none; padding-left: 0.4rem; margin: 0.1rem 0; }
+  .okf-tocpage li { margin: 0.03rem 0; }
   .okf-tocpage li { display: flex; align-items: flex-end; }
   .okf-tocpage li > a { flex: 0 1 auto; }
   /* leader dots show only when a real page number was injected */
