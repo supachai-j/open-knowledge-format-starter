@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self-OKF Wiki — OKF Viewer</title>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<style>
+:root{--bg:#0f1115;--panel:#181b22;--ink:#e6e8ec;--mut:#9aa3af;--line:#2a2f3a;--acc:#4f86c6}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;display:flex;flex-direction:column}
+header{padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:15px;margin:0;font-weight:600}header .sp{flex:1}
+input,select{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:13px}
+#main{flex:1;display:flex;min-height:0}#cy{flex:1;min-width:0}
+#side{width:380px;border-left:1px solid var(--line);overflow:auto;padding:16px;background:var(--panel)}
+#side h2{font-size:16px;margin:0 0 2px}#side .type{display:inline-block;font-size:11px;color:#fff;border-radius:4px;padding:1px 7px;margin-bottom:8px}
+#side .desc{color:var(--mut);margin:0 0 10px}#side .meta{font-size:12px;color:var(--mut);margin-bottom:10px}
+#side .tag{display:inline-block;background:#222834;border:1px solid var(--line);border-radius:10px;padding:0 8px;margin:0 4px 4px 0;font-size:11px}
+#body{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+#body table{border-collapse:collapse;width:100%}#body th,#body td{border:1px solid var(--line);padding:4px 7px;text-align:left;font-size:12px}
+#body pre{background:#0c0e12;padding:10px;border-radius:6px;overflow:auto}#body code{font-family:ui-monospace,monospace}
+#body a{color:var(--acc);cursor:pointer}#body a.broken{color:#c0504d;text-decoration:line-through}
+.back a{display:block;color:var(--acc);cursor:pointer;font-size:12px;margin:2px 0}
+.legend{font-size:11px;color:var(--mut);display:flex;gap:10px;flex-wrap:wrap}.legend span{display:flex;align-items:center;gap:4px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}.empty{color:var(--mut);padding:24px}
+</style></head><body>
+<header>
+  <h1>Self-OKF Wiki</h1>
+  <span id="legend" class="legend"></span><span class="sp"></span>
+  <input id="search" placeholder="Search title / id / tag…">
+  <select id="typeFilter"><option value="">All types</option></select>
+  <select id="layout"><option value="cose">cose</option><option value="concentric">concentric</option><option value="breadthfirst">breadthfirst</option><option value="circle">circle</option><option value="grid">grid</option></select>
+</header>
+<div id="main"><div id="cy"></div>
+  <div id="side"><div class="empty">Click a concept node to inspect it.</div></div></div>
+<script>
+const DATA = {"name": "Self-OKF Wiki", "concepts": [{"id": "metrics/weekly-active-users", "type": "Metric", "title": "Weekly Active Users (WAU)", "description": "Count of distinct customers with >=1 order in a rolling 7-day window.", "resource": "", "tags": ["growth", "engagement", "metric"], "timestamp": "2026-06-15T00:00:00Z", "body": "# Definition\n\n**WAU** = number of distinct `customer_id` values with at least one order in the\nrolling 7-day window ending on the reporting date.\n\n# Calculation\n\n```sql\nSELECT COUNT(DISTINCT customer_id) AS wau\nFROM orders\nWHERE created_at >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 7 DAY);\n```\n\n# Source tables\n\n- Derived from [orders](okf:tables/orders); customer attributes from [customers](okf:tables/customers).\n\n# Citations\n\n- Example concept created during bundle scaffolding. Replace with a real source from `raw/`.\n", "links": ["tables/customers", "tables/orders"], "broken": []}, {"id": "playbooks/incident-response", "type": "Playbook", "title": "Incident Response (Sev1/Sev2)", "description": "Step-by-step runbook for declaring and resolving a Sev1/Sev2 incident.", "resource": "", "tags": ["oncall", "incident", "ops"], "timestamp": "2026-06-15T00:00:00Z", "body": "# When to use\n\nTrigger when a customer-facing outage or data-integrity issue is suspected.\n\n# Steps\n\n1. **Declare** — open an incident channel; assign an Incident Commander (IC).\n2. **Assess severity** — Sev1 = full outage / data loss; Sev2 = degraded / partial.\n3. **Mitigate** — stop the bleeding before root-causing (roll back, failover, feature-flag off).\n4. **Communicate** — post status updates on a fixed cadence (Sev1: every 15 min).\n5. **Resolve & verify** — confirm recovery against [weekly-active-users](okf:metrics/weekly-active-users) and key dashboards.\n6. **Post-mortem** — blameless review within 48h; file follow-up actions.\n\n# Related\n\n- Data sources to check: [orders](okf:tables/orders), [customers](okf:tables/customers).\n\n# Citations\n\n- Example concept created during bundle scaffolding. Replace with a real source from `raw/`.\n", "links": ["metrics/weekly-active-users", "tables/customers", "tables/orders"], "broken": []}, {"id": "references/joins/orders__customers", "type": "Reference", "title": "Orders → Customers join", "description": "How to join the orders table to the customers table on customer_id.", "resource": "", "tags": ["join", "sales", "customers"], "timestamp": "2026-06-15T00:00:00Z", "body": "Join [orders](okf:tables/orders) to [customers](okf:tables/customers)\non `customer_id` (many orders → one customer).\n\n# Common query patterns\n\n```sql\nSELECT c.email, COUNT(*) AS order_count, SUM(o.total) AS lifetime_value\nFROM orders o\nJOIN customers c USING (customer_id)\nGROUP BY c.email;\n```\n\n# Citations\n\n[1] Example reference concept created during bundle scaffolding. Replace with a real source from `raw/`.\n", "links": ["tables/customers", "tables/orders"], "broken": []}, {"id": "tables/customers", "type": "BigQuery Table", "title": "Customers", "description": "Customer master record; one row per customer, referenced by orders.", "resource": "https://console.cloud.google.com/bigquery?t=customers", "tags": ["customers", "crm"], "timestamp": "2026-06-15T00:00:00Z", "body": "# Schema\n\n| Column | Type | Description |\n| :--- | :--- | :--- |\n| customer_id | STRING | Unique customer identifier (primary key). |\n| email | STRING | Primary contact email. |\n| signup_at | TIMESTAMP | Account creation time (UTC). |\n\n# Joins\n\n- Referenced by [orders](okf:tables/orders) via `customer_id` (one customer → many orders).\n- Feeds the [weekly-active-users](okf:metrics/weekly-active-users) metric.\n\n# Citations\n\n- Example concept created during bundle scaffolding. Replace with a real source from `raw/`.\n", "links": ["metrics/weekly-active-users", "tables/orders"], "broken": []}, {"id": "tables/orders", "type": "BigQuery Table", "title": "Orders", "description": "Primary table for customer purchase history; one row per order.", "resource": "https://console.cloud.google.com/bigquery?t=orders", "tags": ["sales", "revenue", "orders"], "timestamp": "2026-06-15T00:00:00Z", "body": "# Schema\n\n| Column | Type | Description |\n| :--- | :--- | :--- |\n| order_id | STRING | Unique order identifier (primary key). |\n| customer_id | STRING | FK to [customers](okf:tables/customers). |\n| total | FLOAT | Transaction value in USD. |\n| created_at | TIMESTAMP | Order creation time (UTC). |\n\n# Joins\n\n- Joins to [customers](okf:tables/customers) on `customer_id` (many orders → one customer).\n\n# Citations\n\n- Example concept created during bundle scaffolding. Replace with a real source from `raw/`.\n", "links": ["tables/customers"], "broken": []}]};
+const byId={}; DATA.concepts.forEach(c=>byId[c.id]=c);
+const types=[...new Set(DATA.concepts.map(c=>c.type))].sort();
+const palette=['#4f86c6','#6cc24a','#e8a33d','#c0504d','#8064a2','#4bacc6','#f06292','#90a4ae','#a3be8c','#d08770'];
+const typeColor={}; types.forEach((t,i)=>typeColor[t]=palette[i%palette.length]);
+const nodes=DATA.concepts.map(c=>({data:{id:c.id,label:c.title||c.id,type:c.type}}));
+const edges=[]; DATA.concepts.forEach(c=>(c.links||[]).forEach(t=>{if(byId[t])edges.push({data:{id:c.id+' -> '+t,source:c.id,target:t}});}));
+const backlinks={}; edges.forEach(e=>{(backlinks[e.data.target]=backlinks[e.data.target]||[]).push(e.data.source);});
+const cy=cytoscape({container:document.getElementById('cy'),elements:[...nodes,...edges],
+  style:[
+    {selector:'node',style:{'background-color':e=>typeColor[e.data('type')]||'#90a4ae','label':'data(label)','color':'#cfd4dc','font-size':9,'text-wrap':'wrap','text-max-width':110,'text-valign':'bottom','text-margin-y':3,'width':18,'height':18}},
+    {selector:'edge',style:{'width':1,'line-color':'#3a4250','target-arrow-color':'#3a4250','target-arrow-shape':'triangle','curve-style':'bezier','arrow-scale':0.8}},
+    {selector:'node:selected',style:{'border-width':3,'border-color':'#fff'}},
+    {selector:'.dim',style:{'opacity':0.12}}
+  ],layout:{name:'cose',animate:false,padding:40}});
+const legend=document.getElementById('legend'); types.forEach(t=>{const s=document.createElement('span');s.innerHTML=`<span class="dot" style="background:${typeColor[t]}"></span>${t}`;legend.appendChild(s);});
+const tf=document.getElementById('typeFilter'); types.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;tf.appendChild(o);});
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function show(id){const c=byId[id];if(!c)return;const side=document.getElementById('side');
+  let h=`<h2>${esc(c.title)}</h2><span class="type" style="background:${typeColor[c.type]||'#90a4ae'}">${esc(c.type)}</span>`;
+  h+=`<div class="meta"><code>${esc(c.id)}</code></div>`;
+  if(c.description)h+=`<p class="desc">${esc(c.description)}</p>`;
+  if(c.resource)h+=`<div class="meta">🔗 <a href="${esc(c.resource)}" target="_blank" rel="noopener">${esc(c.resource)}</a></div>`;
+  if(c.tags&&c.tags.length)h+=`<div>${c.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>`;
+  const bl=backlinks[c.id]||[]; if(bl.length)h+=`<div class="meta back" style="margin-top:10px"><b>Cited by</b>${bl.map(b=>`<a data-go="${esc(b)}">${esc((byId[b]||{}).title||b)}</a>`).join('')}</div>`;
+  h+=`<div id="body">${marked.parse(c.body||'')}</div>`;
+  side.innerHTML=h;
+  side.querySelectorAll('a[href^="okf:"]').forEach(a=>{const id=a.getAttribute('href').slice(4);a.removeAttribute('href');a.onclick=()=>select(id);});
+  side.querySelectorAll('a[href^="okf-missing:"]').forEach(a=>{a.classList.add('broken');a.removeAttribute('href');a.title='not-yet-written concept';});
+  side.querySelectorAll('a[data-go]').forEach(a=>{a.onclick=()=>select(a.getAttribute('data-go'));});
+}
+function select(id){const n=cy.getElementById(id);if(n.empty())return;cy.elements().unselect();n.select();cy.animate({center:{eles:n},zoom:1.2},{duration:250});show(id);}
+cy.on('tap','node',e=>select(e.target.id()));
+document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase();cy.nodes().forEach(n=>{const c=byId[n.id()];const hit=!q||(c.title+ ' '+c.id+' '+(c.tags||[]).join(' ')).toLowerCase().includes(q);n.toggleClass('dim',!hit);});});
+document.getElementById('typeFilter').addEventListener('change',e=>{const t=e.target.value;cy.nodes().forEach(n=>n.toggleClass('dim',t&&byId[n.id()].type!==t));});
+document.getElementById('layout').addEventListener('change',e=>cy.layout({name:e.target.value,animate:false,padding:40}).run());
+</script></body></html>

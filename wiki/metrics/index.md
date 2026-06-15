@@ -1,5 +1,3 @@
 # Metrics
 
-> Reserved OKF index for the `metrics/` sub-area.
-
-- [metrics/weekly-active-users](weekly-active-users.md) — WAU definition, formula, and source tables.
+* [Weekly Active Users (WAU)](weekly-active-users.md) - Distinct customers with ≥1 order in a rolling 7-day window.

@@ -23,10 +23,11 @@ raw/                 ← Layer 1: immutable source materials (read-only for the 
 wiki/                ← Layer 2: the OKF bundle (agent-maintained concepts)
   index.md           ← reserved: progressive-disclosure catalog
   log.md             ← reserved: append-only change log
-  tables/ metrics/ playbooks/   ← example concepts (replace with yours)
-tools/               ← concept-template.md + okf-validate.py (conformance checker)
+  tables/ datasets/ metrics/ playbooks/ references/   ← example concepts (replace with yours)
+  viz.html           ← generated self-contained interactive graph viewer
+tools/               ← concept-template.md + okf-validate.py (checker) + okf-viz.py (viewer)
 docs/                ← USAGE.md (how-to, EN/TH) + GUIDELINES.md (authoring rules)
-research/            ← sourced best-practice report + concept mind map
+research/            ← OKF best-practice report, mind map, and reference-impl findings
 ```
 
 ## Quickstart
@@ -35,6 +36,7 @@ research/            ← sourced best-practice report + concept mind map
 git clone https://github.com/supachai-j/open-knowledge-format-starter.git
 cd open-knowledge-format-starter
 python3 tools/okf-validate.py          # → ✓ CONFORMANT with OKF v0.1
+python3 tools/okf-viz.py               # → writes wiki/viz.html, open it in any browser
 ```
 
 1. Read **[AGENTS.md](AGENTS.md)** — governs how concepts are structured and how the agent behaves.
@@ -67,7 +69,9 @@ Any agent that reads `AGENTS.md` (e.g. via `CLAUDE.md`/`GEMINI.md`) can follow t
 ## Background & caveats
 
 See [`research/okf-best-practice-implementation-report.md`](research/okf-best-practice-implementation-report.md)
-for the sourced best-practice guide and [`research/okf-mindmap.json`](research/okf-mindmap.json) for the concept map.
+for the sourced best-practice guide, [`research/okf-mindmap.json`](research/okf-mindmap.json) for the concept map,
+and [`research/knowledge-catalog-findings.md`](research/knowledge-catalog-findings.md) for the gap analysis against
+Google's official reference implementation (which shaped the conventions used here).
 
 > OKF is **v0.1** (days old at scaffold time). Versioning is `<major>.<minor>`; expect changes.
 > The normative spec requires only the `type` field — most "best practices" here come from the

@@ -22,7 +22,9 @@ operating procedure layered on top of it.
 - **Required:** `type` (non-empty). **Recommended:** `title`, `description`, `resource`, `tags`, `timestamp` (ISO 8601 UTC).
 - Keep `type` values within the controlled vocabulary in `AGENTS.md`. Inconsistent typing breaks aggregation.
 - `description` is what an agent reads to decide whether to load the file — make it a sharp one-liner.
-- Prefer structural Markdown (headings, atomic bullets, tables) over prose. Link concepts with **relative Markdown links**; relationship meaning lives in the prose (links are untyped). Broken links are allowed (= unwritten knowledge).
+- Prefer structural Markdown (headings, atomic bullets, tables) over prose. Conventional body order: `# Overview` → `# Schema` → `# Common query patterns` → `# Joins` → `# Citations`.
+- Link concepts with **file-relative Markdown links** (`../tables/customers.md`). **Never start a link with `/`** — it breaks GitHub rendering (Google's reference agent forbids it). Links are untyped — relationship meaning lives in the prose. Only link to existing concepts; broken links are allowed (= unwritten knowledge). Don't over-link or link inside code/headings.
+- Curated/derived knowledge (joins, metric defs, glossary) goes under `references/` with `type: Reference`; tangible assets under `tables/` / `datasets/`.
 
 ---
 
@@ -58,7 +60,14 @@ Run the conformance checker and report the result verbatim:
 python3 tools/okf-validate.py
 ```
 Pass criteria: every non-reserved `.md` in `wiki/` has parseable frontmatter with a non-empty `type`;
-reserved files follow their structure. Broken links are reported as info, not failures.
+reserved files follow their structure. Broken links are reported as info, not failures; `/`-rooted links warn.
+
+## Operation: VISUALIZE
+Generate a self-contained interactive graph of the bundle (no backend, opens in any browser):
+```bash
+python3 tools/okf-viz.py --name "Self-OKF Wiki"   # writes wiki/viz.html
+```
+Regenerate after a batch of changes. Commit `wiki/viz.html` next to the bundle (as Google's reference impl does).
 
 ---
 

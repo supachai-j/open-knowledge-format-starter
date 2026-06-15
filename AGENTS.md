@@ -28,7 +28,9 @@ This repository follows the **Open Knowledge Format (OKF) v0.1** (Google Cloud,
 - **`raw/` is the source of truth.** Drop PDFs, notes, exports here. Read-only for the agent.
 - **`wiki/` is the OKF bundle.** Its root is `wiki/`, so a file at `wiki/tables/orders.md`
   has **Concept ID `tables/orders`** (path within the bundle, minus `.md`).
-- **`tools/`** holds the concept template and any helper scripts.
+- **`tools/`** holds helpers: `concept-template.md`, `okf-validate.py` (conformance checker),
+  and `okf-viz.py` (generates `wiki/viz.html`, a self-contained interactive graph viewer —
+  a port of the visualizer from Google's reference implementation).
 
 ---
 
@@ -49,19 +51,31 @@ Every non-reserved `.md` file in `wiki/` is a **Concept** — one unit of knowle
 **Extension fields:** producers MAY add custom keys. Consumers MUST tolerate unknown keys.
 
 **Controlled `type` vocabulary for this bundle** (extend as needed, keep consistent — inconsistent typing breaks aggregation):
-`BigQuery Table` · `Metric` · `Playbook` · `API Endpoint` · `Concept` · `Entity`
+`BigQuery Table` · `BigQuery Dataset` · `Metric` · `Reference` · `Playbook` · `API Endpoint` · `Concept` · `Entity`
+
+> **Canonical grouping (from Google's reference bundles):** derived/curated knowledge — joins,
+> metric definitions, glossaries — is grouped under a `references/` subtree (e.g.
+> `references/joins/`, `references/metrics/`) and typed `Reference`. Tangible assets go under
+> `tables/` (`BigQuery Table`) and `datasets/` (`BigQuery Dataset`). See `wiki/references/`.
 
 Body rules: favor **structural Markdown** (headings, atomic bullets, tables) over dense prose.
-Conventional headings: `# Schema`, `# Examples`, `# Joins`, `# Citations`.
+Conventional headings (use when applicable, in this order): `# Overview` → `# Schema` →
+`# Common query patterns` (fenced ` ```sql ` blocks) → `# Joins` → `# Examples` → `# Citations`.
 
 ---
 
 ## 3. Linking (the knowledge graph)
 
-- Link concepts with **relative Markdown links**: `[Customers](../tables/customers.md)`.
+- Link concepts with **file-relative Markdown links**: `[Customers](../tables/customers.md)`.
+- **Never start a link with `/`.** The OKF spec §5.1 *recommends* bundle-root-absolute links, but
+  Google's reference enrichment agent forbids them because `/`-rooted links **break GitHub rendering**.
+  We follow the reference implementation: file-relative only. (`tools/okf-validate.py` warns on `/` links.)
 - Links are **untyped** in OKF — the relationship kind (depends-on, joins-with, references) is
   expressed in the **surrounding prose**, not the link syntax.
-- **Broken links are allowed** — they mark knowledge not yet written (a placeholder/slot).
+- **Only link to concepts that exist** (or intentionally leave a placeholder). **Broken links are allowed** —
+  they mark knowledge not yet written.
+- One link per concept-mention per section is enough; don't over-link. **Don't** link from headings,
+  fenced code blocks, or schema field-name lists. Don't link a doc to itself.
 
 ---
 

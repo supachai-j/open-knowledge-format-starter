@@ -1,5 +1,3 @@
 # Playbooks
 
-> Reserved OKF index for the `playbooks/` sub-area.
-
-- [playbooks/incident-response](incident-response.md) — Sev1/Sev2 incident response runbook.
+* [Incident Response (Sev1/Sev2)](incident-response.md) - Step-by-step runbook for declaring and resolving an incident.
