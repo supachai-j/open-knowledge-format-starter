@@ -120,7 +120,8 @@ and proposed mappings BEFORE writing anything**:
 > **At scale / shared use:** past ~150 concepts, search with `tools/okf-search.py` (hybrid BM25 +
 > optional on-prem semantic via Ollama, RRF-fused; auto-falls back to BM25) instead of scanning the
 > index. For cross-session / cross-team enterprise use, agents reach the bundle through the self-hosted
-> MCP server (`server/okf_mcp_server.py`) and propose writes via PR — see `docs/ENTERPRISE.md`.
+> MCP server (`server/okf_mcp_server.py`) and propose writes via PR (default) — or, for high write
+> volume, via advisory leases (`OKF_WRITE_MODE=lease`, `tools/okf-lease.py`). See `docs/ENTERPRISE.md`.
 
 ---
 

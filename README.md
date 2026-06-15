@@ -25,7 +25,7 @@ wiki/                ← Layer 2: the OKF bundle (agent-maintained concepts)
   log.md             ← reserved: append-only change log
   tables/ datasets/ metrics/ playbooks/ references/   ← example concepts (replace with yours)
   viz.html           ← generated single-file graph viewer (libs inlined; air-gap)
-tools/               ← validate · viz (air-gap) · index (BM25) · embed (Ollama) · search (hybrid RRF)
+tools/               ← validate · viz (air-gap) · index (BM25) · embed (Ollama) · search (hybrid RRF) · lease (concurrency)
   vendor/            ← Cytoscape + marked (MIT), inlined into viz.html for offline use
 server/              ← okf_mcp_server.py — self-hostable MCP access layer for agents
 deploy/              ← docker-compose (gitea + MCP + TLS proxy) for on-prem self-hosting
@@ -89,6 +89,9 @@ cd deploy && cp .env.example .env && docker compose up -d
 
 Agents connect to one internal MCP endpoint and get `okf_search`, `okf_get_concept`,
 `okf_list_concepts`, `okf_read_index`, and `okf_propose_change` (branch + PR, never direct to `main`).
+For high write-throughput teams, set `OKF_WRITE_MODE=lease` to switch to advisory leases
+(`okf_acquire_lease` / `okf_commit_concept` / `okf_release_lease`) — short-TTL, token-verified,
+auto-expiring so a crashed agent never deadlocks a concept.
 
 ## Conformance (OKF v0.1)
 

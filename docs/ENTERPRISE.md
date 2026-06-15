@@ -65,10 +65,31 @@ This gives every enterprise property for free: **audit trail** (git log), **revi
 Merging `main` triggers a webhook → MCP server pulls → reindexes. Knowledge is now visible to all sessions.
 
 > **Concurrency alternatives** (pick per write-volume; default is PR-gated):
-> - **Lease/lock** — high write volume: MCP hands out a short TTL lease per concept/directory so
->   two agents don't edit the same file; still commits to branches. Faster, weaker review.
+> - **Lease/lock (implemented)** — high write volume: set `OKF_WRITE_MODE=lease`. The MCP server hands
+>   out short-TTL advisory leases per concept (`tools/okf-lease.py`) so two agents never edit the same
+>   file; holders write directly to the shared branch via `okf_commit_concept`. Faster, weaker review. See below.
 > - **Append-only proposals + curator** — agents drop proposals into an `inbox/`; a single curator
 >   agent batches, reconciles contradictions, and merges. Strongest quality gate; matches our supervised INGEST.
+
+### Lease mode (concurrent direct writes)
+
+Enabled with `OKF_WRITE_MODE=lease`. Flow per agent editing a concept:
+
+1. `okf_acquire_lease("tables/orders", ttl_seconds=300)` → `{token, expires_at}`; another agent asking
+   for the same concept gets `{error:"locked", held_by:{owner,…}}` and works on something else.
+2. Edit, then `okf_commit_concept(..., token=…)` — the server verifies the lease, writes the file,
+   commits to the shared branch, and `git pull --rebase` + push (different concepts = different files =
+   auto-merge; the same concept is impossible because the lease blocks it).
+3. `okf_renew_lease(...)` to keep working; `okf_release_lease(...)` when done.
+
+Properties: **advisory** + **TTL auto-expiry** (a crashed agent never deadlocks a concept — its lease
+is stolen once expired), **token-verified** (only the holder can commit/renew/release), **single-authority**
+(the one MCP server uses atomic `O_CREAT|O_EXCL` lease files; git mutations are serialized by a lock).
+CLI for ops/inspection: `python3 tools/okf-lease.py list` · `... break <concept>` (admin force-release).
+
+> Use lease mode when write throughput matters more than per-change review. Keep PR mode (default) when
+> you want audit + review on every change. You can even run **both**: a high-write team on a lease-mode
+> server, everyone else PR-gated, against the same git repo.
 
 ## Cross-session & cross-team semantics
 
