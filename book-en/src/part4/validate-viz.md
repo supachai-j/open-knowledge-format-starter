@@ -51,7 +51,12 @@ directly inside, **fetching nothing from the network when opened**. Suitable for
 
 Below is the `viz.html` of the example wiki included in this project (click a node to see its details; try searching and filtering by type):
 
-<iframe src="../viz-example.html" title="OKF graph example" loading="lazy" style="width:100%;height:520px;border:1px solid var(--table-border-color,#ddd);border-radius:12px;margin:0.5rem 0;"></iframe>
+<iframe class="okf-screen-only" src="../viz-example.html" title="OKF graph example" loading="lazy" style="width:100%;height:520px;border:1px solid var(--table-border-color,#ddd);border-radius:12px;margin:0.5rem 0;"></iframe>
+
+<div class="okf-print-only okf-embed-fallback">
+🕸 <strong>Interactive graph</strong> — shown on the web only (iframes don't render in the PDF).<br>
+View it online at: <span class="okf-url">https://supachai-j.github.io/open-knowledge-format-starter/en/viz-example.html</span>
+</div>
 
 [Open full-screen →](../viz-example.html)
 

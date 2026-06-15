@@ -78,3 +78,15 @@
 
 /* language switch button injected into the top menu bar */
 #okf-lang { font-weight: 700; }
+
+/* ── Print vs screen: iframes don't render in PDF, show a link fallback ── */
+.okf-print-only { display: none; }
+@media print {
+  .okf-screen-only { display: none !important; }
+  .okf-print-only { display: block !important; }
+}
+.okf-embed-fallback {
+  border: 1px dashed #8b5cf6; border-radius: 12px; padding: 1rem 1.2rem; margin: 0.6rem 0;
+  background: rgba(139, 92, 246, 0.07); line-height: 1.7;
+}
+.okf-embed-fallback .okf-url { font-family: ui-monospace, monospace; word-break: break-all; }
