@@ -11,8 +11,8 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
       - name: Validate OKF conformance (blocks merge on failure)
@@ -22,7 +22,7 @@ jobs:
       - name: Regenerate viewer
         run: python3 tools/okf-viz.py --name "Self-OKF Wiki"
       - name: Upload viewer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: okf-viz
           path: wiki/viz.html
