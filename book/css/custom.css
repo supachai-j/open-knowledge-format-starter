@@ -94,9 +94,8 @@
 /* ── Full-page A4 cover in the PDF ─────────────────────────────── */
 @media print {
   @page { size: A4; }
-  @page cover { margin: 0; }            /* full-bleed cover page only */
+  @page :first { margin: 0; }           /* first page = full-bleed cover (no leading blank page) */
   .okf-cover {
-    page: cover;
     box-sizing: border-box;
     min-height: 100vh;                  /* fill the whole A4 page */
     margin: 0;
