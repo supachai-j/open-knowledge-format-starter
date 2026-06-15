@@ -6,6 +6,8 @@
 
 - [OKF คืออะไร](./part1/what-is-okf.md)
 - [ทำไมต้อง OKF (เทียบกับ RAG)](./part1/why-okf.md)
+- [ประวัติศาสตร์ Knowledge Base](./part1/history.md)
+- [แนวคิดพื้นฐานที่ต้องรู้](./part1/foundations.md)
 
 # ภาคที่ 2 — เริ่มต้นใช้งาน
 
@@ -44,3 +46,4 @@
 - [อ้างอิงเครื่องมือ (CLI)](./appendix/tools.md)
 - [คำถามที่พบบ่อย (FAQ)](./appendix/faq.md)
 - [อภิธานศัพท์](./appendix/glossary.md)
+- [แหล่งข้อมูลอ้างอิง](./appendix/references.md)

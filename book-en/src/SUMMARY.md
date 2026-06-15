@@ -6,6 +6,8 @@
 
 - [What is OKF](./part1/what-is-okf.md)
 - [Why OKF (vs. RAG)](./part1/why-okf.md)
+- [History of Knowledge Bases](./part1/history.md)
+- [Core concepts you should know](./part1/foundations.md)
 
 # Part 2 — Getting Started
 
@@ -44,3 +46,4 @@
 - [Tools reference (CLI)](./appendix/tools.md)
 - [FAQ](./appendix/faq.md)
 - [Glossary](./appendix/glossary.md)
+- [References](./appendix/references.md)
