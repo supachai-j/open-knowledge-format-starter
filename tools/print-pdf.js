@@ -40,7 +40,7 @@ function findChrome() {
     if (mode === 'cover') {
       opts.pageRanges = '1';
       opts.displayHeaderFooter = false;
-    } else {
+    } else {  // 'body' or 'measure' — identical layout so page numbers match
       const base = "font-family:'Noto Sans Thai','Loma','TLwg Typo',sans-serif;color:#9aa3af;";
       opts.displayHeaderFooter = true;
       opts.headerTemplate = `<div style="${base}font-size:8px;width:100%;padding:0 15mm;text-align:center;">${headerTitle || ''}</div>`;
@@ -49,6 +49,9 @@ function findChrome() {
         `<div style="${base}font-size:7px;width:100%;padding:0 12mm;display:flex;justify-content:space-between;align-items:center;">` +
         `<span>${credit || ''}</span>` +
         `<span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`;
+      // 'measure' = same layout as 'body' + a heading outline so we can read each
+      // chapter's real page number and inject it into the TOC.
+      if (mode === 'measure') opts.outline = true;
     }
     await page.pdf(opts);
     console.log('wrote', output, '(' + mode + ')');

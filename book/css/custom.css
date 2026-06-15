@@ -85,7 +85,18 @@
 /* dedicated Table-of-Contents page */
 .okf-tocpage strong { display: block; margin: 1.1rem 0 0.1rem; color: #8b5cf6; font-size: 1.02rem; }
 .okf-tocpage ul { margin-top: 0.15rem; }
-@media print { .okf-tocpage { page-break-before: always; page-break-after: always; } }
+.okf-tocpage .okf-leader, .okf-tocpage .okf-pg { display: none; }   /* web: plain clickable list */
+@media print {
+  .okf-tocpage { page-break-before: always; page-break-after: always; }
+  .okf-tocpage ul { list-style: none; padding-left: 0.4rem; }
+  .okf-tocpage li { display: flex; align-items: flex-end; }
+  .okf-tocpage li > a { flex: 0 1 auto; }
+  /* leader dots show only when a real page number was injected */
+  .okf-tocpage li:has(.okf-pg:not(:empty)) .okf-leader {
+    display: block; flex: 1 1 auto; border-bottom: 1px dotted #b9a7e6; margin: 0 0.4rem 0.34rem; min-width: 1rem;
+  }
+  .okf-tocpage li .okf-pg:not(:empty) { display: inline; font-variant-numeric: tabular-nums; color: #555; white-space: nowrap; }
+}
 
 /* language switch button injected into the top menu bar */
 #okf-lang { font-weight: 700; }
