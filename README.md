@@ -24,8 +24,9 @@ wiki/                ← Layer 2: the OKF bundle (agent-maintained concepts)
   index.md           ← reserved: progressive-disclosure catalog
   log.md             ← reserved: append-only change log
   tables/ datasets/ metrics/ playbooks/ references/   ← example concepts (replace with yours)
-  viz.html           ← generated self-contained interactive graph viewer
-tools/               ← concept-template.md + okf-validate.py + okf-viz.py + okf-index.py (BM25 search)
+  viz.html           ← generated single-file graph viewer (libs inlined; air-gap)
+tools/               ← validate · viz (air-gap) · index (BM25) · embed (Ollama) · search (hybrid RRF)
+  vendor/            ← Cytoscape + marked (MIT), inlined into viz.html for offline use
 server/              ← okf_mcp_server.py — self-hostable MCP access layer for agents
 deploy/              ← docker-compose (gitea + MCP + TLS proxy) for on-prem self-hosting
 .gitea/ ci/          ← conformance CI gate (Gitea Actions / GitLab CI)
@@ -73,6 +74,14 @@ concurrency options, and deploy steps: **[docs/ENTERPRISE.md](docs/ENTERPRISE.md
 # Local / dev (stdio, no network):
 python3 tools/okf-index.py build            # build the BM25 search index
 python3 server/okf_mcp_server.py            # serve the bundle over MCP (stdio)
+
+# Optional semantic upgrade (on-prem, no external API) — search auto-falls back to BM25 if absent:
+ollama pull nomic-embed-text
+python3 tools/okf-embed.py build            # embeddings → wiki/.okf-embed.json
+python3 tools/okf-search.py "how is WAU defined"   # hybrid BM25 + semantic (RRF)
+
+# Fully offline viewer (libs inlined, no CDN):
+python3 tools/okf-viz.py                    # wiki/viz.html — single self-contained file
 
 # On-prem stack (internal git + MCP + TLS/auth proxy):
 cd deploy && cp .env.example .env && docker compose up -d

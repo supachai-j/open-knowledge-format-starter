@@ -117,7 +117,8 @@ and proposed mappings BEFORE writing anything**:
 2. Drill into the specific concept files.
 3. Answer **only** from loaded concepts; cite Concept IDs. If coverage is missing, say so and offer to ingest.
 
-> **At scale / shared use:** past ~150 concepts, use `tools/okf-index.py` (BM25) instead of scanning the
+> **At scale / shared use:** past ~150 concepts, search with `tools/okf-search.py` (hybrid BM25 +
+> optional on-prem semantic via Ollama, RRF-fused; auto-falls back to BM25) instead of scanning the
 > index. For cross-session / cross-team enterprise use, agents reach the bundle through the self-hosted
 > MCP server (`server/okf_mcp_server.py`) and propose writes via PR — see `docs/ENTERPRISE.md`.
 

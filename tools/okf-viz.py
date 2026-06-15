@@ -124,8 +124,7 @@ TEMPLATE = r"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__NAME__ — OKF Viewer</title>
-<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+__LIBS__
 <style>
 :root{--bg:#0f1115;--panel:#181b22;--ink:#e6e8ec;--mut:#9aa3af;--line:#2a2f3a;--acc:#4f86c6}
 *{box-sizing:border-box}body{margin:0;font:14px/1.55 system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;display:flex;flex-direction:column}
@@ -200,6 +199,8 @@ def main():
     ap.add_argument("bundle", nargs="?", default=os.path.join(here, "..", "wiki"))
     ap.add_argument("-o", "--out")
     ap.add_argument("--name")
+    ap.add_argument("--cdn", action="store_true",
+                    help="load Cytoscape/marked from CDN instead of inlining the vendored copies")
     a = ap.parse_args()
     bundle = os.path.abspath(a.bundle)
     if not os.path.isdir(bundle):
@@ -208,14 +209,29 @@ def main():
     name = a.name or os.path.basename(bundle.rstrip("/"))
     out = a.out or os.path.join(bundle, "viz.html")
     concepts = collect(bundle)
-    blob = json.dumps({"name": name, "concepts": concepts}, ensure_ascii=False)
+    blob = json.dumps({"name": name, "concepts": concepts}, ensure_ascii=False).replace("</", "<\\/")
+
+    # Air-gap by default: inline the vendored libs so viz.html is a true single file.
+    cyto = os.path.join(here, "vendor", "cytoscape.min.js")
+    mk = os.path.join(here, "vendor", "marked.min.js")
+    if not a.cdn and os.path.exists(cyto) and os.path.exists(mk):
+        def inline(p):
+            return "<script>" + open(p, encoding="utf-8").read().replace("</script", "<\\/script") + "</script>"
+        libs, mode = inline(cyto) + "\n" + inline(mk), "vendored (air-gap, single-file)"
+    else:
+        libs = ('<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>\n'
+                '<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>')
+        mode = "CDN" + ("" if a.cdn else " (vendored libs not found — run from repo with tools/vendor/)")
+
     page = (TEMPLATE
             .replace("__BUNDLE_JSON__", blob)
-            .replace("__NAME__", html.escape(name)))
+            .replace("__NAME__", html.escape(name))
+            .replace("__LIBS__", libs))
     with open(out, "w", encoding="utf-8") as fh:
         fh.write(page)
     edges = sum(len(c["links"]) for c in concepts)
-    print(f"✓ wrote {out}\n  {len(concepts)} concepts, {edges} links, {len(set(t['type'] for t in concepts))} types")
+    print(f"✓ wrote {out}\n  {len(concepts)} concepts, {edges} links, "
+          f"{len(set(t['type'] for t in concepts))} types · assets: {mode}")
     return 0
 
 

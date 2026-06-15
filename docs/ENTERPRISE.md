@@ -87,15 +87,24 @@ Merging `main` triggers a webhook → MCP server pulls → reindexes. Knowledge 
   - `reader` → search/get/list only.
   - `proposer` → + `okf_propose_change` (branch/PR only; never direct to `main`).
   - `curator` → may merge (via git server, not MCP).
-- **Air-gapped:** vendor the `viz.html` CDN assets locally (Cytoscape + marked) so nothing is fetched
-  at view time; use a self-hosted embedding model (e.g. via Ollama on-prem) if you enable semantic search.
+- **Air-gapped:** `okf-viz.py` already **inlines** Cytoscape + marked from `tools/vendor/` by default, so
+  `viz.html` is a true single file that fetches nothing at view time (use `--cdn` only if you prefer CDN).
+  Semantic search runs on a **self-hosted** embedding model via Ollama — nothing leaves the network.
 - **Secrets/PII:** `raw/` stays out of the bundle (already `.gitignore`d); never put credentials in concepts.
 
 ## Scaling
 
 - **< ~150 concepts:** flat `index.md` progressive disclosure is enough; search optional.
-- **> ~150:** enable `tools/okf-index.py` (BM25). Add **local semantic vectors** (Reciprocal-Rank-Fusion
-  with BM25) only when keyword recall isn't enough — keep it on-prem (Ollama / a bundled model).
+- **> ~150:** build the BM25 index (`tools/okf-index.py build`). `okf_search` uses it automatically.
+- **Recall not enough? add the semantic layer** — embed concepts with a self-hosted model and let
+  `okf-search.py` fuse BM25 + semantic via Reciprocal Rank Fusion:
+  ```bash
+  ollama pull nomic-embed-text            # one-time, on-prem
+  python3 tools/okf-embed.py build        # writes wiki/.okf-embed.json
+  python3 tools/okf-search.py "…" -k 8    # mode: hybrid (bm25+semantic, RRF)
+  ```
+  If embeddings aren't built or Ollama is down, search **automatically falls back to BM25-only** and
+  reports the mode — so semantic is a pure opt-in upgrade with no hard dependency.
 - **Very large / many teams:** federate bundles, run one MCP server per domain behind one gateway,
   cache the index in memory and rebuild incrementally on webhook.
 
@@ -132,6 +141,7 @@ python3 server/okf_mcp_server.py            # stdio transport
 | Task | Command / action |
 |------|------------------|
 | Rebuild search index | `python3 tools/okf-index.py build` (CI does this on merge) |
+| Rebuild semantic embeddings | `python3 tools/okf-embed.py build` (needs on-prem Ollama; optional) |
 | Validate before merge | `python3 tools/okf-validate.py` (CI gate) |
 | Regenerate viewer | `python3 tools/okf-viz.py` (CI artifact) |
 | Force MCP resync | restart server, or hit the post-merge webhook |

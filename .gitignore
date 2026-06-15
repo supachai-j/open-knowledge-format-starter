@@ -11,8 +11,9 @@ __pycache__/
 .venv/
 venv/
 
-# Generated search index (CI / the MCP server rebuild it on demand)
+# Generated search artifacts (CI / the MCP server rebuild them on demand)
 **/.okf-index.json
+**/.okf-embed.json
 
 # Local deploy secrets
 deploy/.env

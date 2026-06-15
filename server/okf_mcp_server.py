@@ -49,6 +49,7 @@ def _load(modname, filename):
     return mod
 
 okfindex = _load("okfindex", "okf-index.py")          # reuse build/query/parse_frontmatter
+okfsearch = _load("okfsearch", "okf-search.py")        # hybrid BM25 + semantic (RRF), graceful fallback
 
 
 def ensure_index():
@@ -107,9 +108,12 @@ mcp = FastMCP("okf-knowledge-base", host=os.getenv("OKF_MCP_HOST", "0.0.0.0"),
 
 
 @mcp.tool()
-def okf_search(query: str, k: int = 8, type: str = "") -> list:
-    """Search the knowledge base (BM25). Returns ranked concepts with id/type/description/score."""
-    return okfindex.query(ensure_index(), query, k=k, type_filter=type or None)
+def okf_search(query: str, k: int = 8, type: str = "") -> dict:
+    """Search the knowledge base (hybrid BM25 + semantic, RRF-fused; falls back to BM25 if no
+    embeddings / Ollama). Returns {mode, results:[{id,type,description,rrf_score}]}."""
+    ensure_index()
+    results, mode = okfsearch.search(BUNDLE, query, k=k, type_filter=type or None)
+    return {"mode": mode, "results": results}
 
 
 @mcp.tool()
