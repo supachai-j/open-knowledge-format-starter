@@ -45,15 +45,27 @@ jobs:
           # font without Thai glyphs and the Thai PDF renders broken. fonts-thai-tlwg
           # guarantees Thai coverage; fonts-noto-* match the on-page font + emoji.
           sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-thai-tlwg fonts-noto-core fonts-noto-color-emoji \
-            || sudo apt-get install -y -qq fonts-thai-tlwg
+          sudo apt-get install -y -qq fonts-thai-tlwg fonts-noto-core fonts-noto-color-emoji poppler-utils \
+            || sudo apt-get install -y -qq fonts-thai-tlwg poppler-utils
           sudo fc-cache -f >/dev/null 2>&1 || true
           export CHROME_PATH="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium-browser || command -v chromium || true)"
           if [ -z "$CHROME_PATH" ]; then echo "No Chrome found — skipping PDF (in-book print page still works)."; exit 0; fi
           # puppeteer-core drives system Chrome via CDP so we can add a header + page-number footer.
           npm i --no-save puppeteer-core@23 || npm i --no-save puppeteer-core
-          node tools/print-pdf.js "$PWD/book/book/print.html"    "$PWD/book/book/okf-manual-th.pdf"     "คู่มือ Open Knowledge Format (OKF)" || true
-          node tools/print-pdf.js "$PWD/book-en/book/print.html" "$PWD/book/book/en/okf-manual-en.pdf" "The Open Knowledge Format (OKF) Handbook" || true
+          # Two passes (clean full-bleed cover + header/footer body), then stitch
+          # cover page 1 + body pages 2..N so the cover stays free of header/footer.
+          gen() {
+            local src="$1" out="$2" title="$3" d
+            d="$(mktemp -d)"
+            node tools/print-pdf.js "$src" "$d/cover.pdf" ""       cover || return 1
+            node tools/print-pdf.js "$src" "$d/body.pdf"  "$title" body  || return 1
+            pdfseparate "$d/body.pdf" "$d/p-%04d.pdf"
+            rm -f "$d/p-0001.pdf"                       # drop body's page 1 (use the clean cover instead)
+            pdfunite "$d/cover.pdf" $(ls "$d"/p-*.pdf | sort) "$out"
+            rm -rf "$d"
+          }
+          gen "$PWD/book/book/print.html"    "$PWD/book/book/okf-manual-th.pdf"     "คู่มือ Open Knowledge Format (OKF)" || true
+          gen "$PWD/book-en/book/print.html" "$PWD/book/book/en/okf-manual-en.pdf" "The Open Knowledge Format (OKF) Handbook" || true
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
