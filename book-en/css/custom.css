@@ -90,3 +90,28 @@
   background: rgba(139, 92, 246, 0.07); line-height: 1.7;
 }
 .okf-embed-fallback .okf-url { font-family: ui-monospace, monospace; word-break: break-all; }
+
+/* ── Full-page A4 cover in the PDF ─────────────────────────────── */
+@media print {
+  @page { size: A4; }
+  @page cover { margin: 0; }            /* full-bleed cover page only */
+  .okf-cover {
+    page: cover;
+    box-sizing: border-box;
+    min-height: 100vh;                  /* fill the whole A4 page */
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    break-after: page;                  /* preface starts on page 2 */
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;          /* keep the gradient when printing */
+  }
+  .okf-cover-title { font-size: 3rem; }
+  .okf-cover-sub { font-size: 1.15rem; }
+  .okf-cover-cta { display: none !important; }   /* web buttons are useless on paper */
+}
