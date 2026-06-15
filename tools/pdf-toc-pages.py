@@ -36,6 +36,7 @@ def main():
         return 0
 
     title2pg = {}
+    ordered = []
 
     def walk(items):
         for it in items:
@@ -47,8 +48,21 @@ def main():
             except Exception:
                 continue
             t = norm(getattr(it, "title", ""))
-            if t and t not in title2pg:
-                title2pg[t] = pg
+            if t:
+                ordered.append((t, pg))
+                if t not in title2pg:
+                    title2pg[t] = pg
+
+    def lookup(h1):
+        if not h1:
+            return None
+        if h1 in title2pg:
+            return title2pg[h1]
+        key = h1[:14]
+        for t, pg in ordered:  # fuzzy: shared long prefix (handles minor heading-text drift)
+            if len(key) >= 8 and (t.startswith(key) or h1.startswith(t[:14])):
+                return pg
+        return None
 
     try:
         walk(reader.outline)
@@ -80,7 +94,7 @@ def main():
                     break
         except Exception:
             pass
-        pages.append(title2pg.get(h1))
+        pages.append(lookup(h1))
 
     try:
         html = open(printhtml, encoding="utf-8").read()
