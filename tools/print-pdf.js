@@ -34,6 +34,7 @@ function findChrome() {
     const page = await browser.newPage();
     await page.goto('file://' + input, { waitUntil: 'networkidle0', timeout: 120000 });
     try { await page.evaluate(() => document.fonts && document.fonts.ready); } catch (e) {}
+    try { await page.waitForFunction('window.__okfMermaidDone === true', { timeout: 30000 }); } catch (e) {}
 
     const opts = { path: output, printBackground: true, preferCSSPageSize: true };
     if (mode === 'cover') {

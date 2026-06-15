@@ -69,7 +69,14 @@ FRAME: Bacteroides
 
 **คือ** ดึงข้อมูลที่เกี่ยวมาใส่ context ของ LLM ตอนถาม เพื่อ ground คำตอบ (ลด hallucination, อ้างอิงได้)
 
-**ตัวอย่าง** (5 ขั้น): `chunk → embed → store → retrieve top-k → generate`
+**ตัวอย่าง** (5 ขั้น):
+
+<pre class="mermaid">
+flowchart LR
+  D["เอกสาร"] --> C["chunk"] --> E["embed"] --> S["vector store"]
+  Q["คำถาม"] --> R["retrieve top-k"]
+  S --> R --> G["LLM generate<br/>คำตอบที่อ้างอิงได้"]
+</pre>
 
 **ใน OKF:** wiki = Layer 1 (สังเคราะห์ไว้แล้ว ค้นเจอก็จบ); RAG = Layer 2 (ขุดเอกสารดิบเมื่อ wiki ยังไม่ครอบคลุม)
 
@@ -85,7 +92,14 @@ FRAME: Bacteroides
 
 **คือ** กราฟของ entity (จุด) + ความสัมพันธ์มีชนิด (เส้น) — "things, not strings" ให้ disambiguation และเหตุผลระดับ entity
 
-**ตัวอย่าง:** `[ลูกค้า A] —สั่ง→ [ออเดอร์ 123] —มี→ [สินค้า X]`
+**ตัวอย่าง:**
+
+<pre class="mermaid">
+flowchart LR
+  CU["ลูกค้า A"] -->|สั่ง| O["ออเดอร์ 123"]
+  O -->|มีสินค้า| P["สินค้า X"]
+  CU -->|อยู่กลุ่ม| SEG["ลูกค้าชั้นดี"]
+</pre>
 
 **ใน OKF:** bundle ทั้งก้อนเป็น knowledge graph (concept = จุด, ลิงก์ = เส้น) — เปิดดูได้ด้วย `okf-viz.py`
 

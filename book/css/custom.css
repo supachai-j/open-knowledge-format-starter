@@ -95,6 +95,22 @@
 }
 .okf-embed-fallback .okf-url { font-family: ui-monospace, monospace; word-break: break-all; }
 
+/* ── Figures, diagrams, illustrations ─────────────────────────── */
+pre.mermaid { background: transparent; border: 0; text-align: center; margin: 1.3rem 0; line-height: normal; }
+pre.mermaid svg { max-width: 100%; height: auto; }
+figure.okf-fig { margin: 1.4rem 0; text-align: center; }
+figure.okf-fig svg { max-width: 100%; height: auto; }
+figure.okf-fig figcaption { font-size: 0.85rem; color: var(--sidebar-fg, #6b7280); margin-top: 0.5rem; font-style: italic; }
+.okf-era {
+  margin: 1.8rem 0 0.6rem; padding: 0.55rem 0.95rem; border-radius: 10px;
+  background: linear-gradient(90deg, rgba(139,92,246,0.13), transparent);
+  border-left: 4px solid #8b5cf6;
+}
+.okf-era .yr { font-weight: 800; color: #8b5cf6; font-size: 0.8rem; letter-spacing: 0.03em; }
+.okf-era .ti { font-weight: 700; font-size: 1.15rem; display: block; margin-top: 0.1rem; }
+.okf-lead { font-size: 1.05rem; line-height: 1.85; }
+.okf-lead .drop { float: left; font-size: 3rem; line-height: 0.8; font-weight: 800; color: #8b5cf6; padding: 0.3rem 0.5rem 0 0; }
+
 /* ── Full-page A4 cover in the PDF ─────────────────────────────── */
 @media print {
   @page { size: A4; margin: 17mm 15mm; }   /* room for the running header + page-number footer */

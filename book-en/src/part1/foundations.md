@@ -24,7 +24,7 @@ FRAME: Bacteroides
 
 **Example** (RDF triple): `TimBernersLee — invented — WorldWideWeb` (subject–predicate–object)
 
-**In OKF:** Markdown links between concepts serve a similar role to triples but are **untyped** — the type of relationship lives in prose (much lighter than OWL).
+**In OKF:** Markdown links between concepts serve a similar role to triples but are **untyped** — the type of relationship lives in the prose (much lighter than OWL).
 
 ## 3. Inverted Index
 
@@ -33,8 +33,8 @@ FRAME: Bacteroides
 **Example:**
 | Term | Documents |
 |------|-----------|
-| cat | D1, D2 |
-| dog | D3 |
+| cat  | D1, D2 |
+| dog  | D3 |
 
 Search "dog" → returns D3 immediately, without scanning every document.
 
@@ -69,7 +69,14 @@ Search "dog" → returns D3 immediately, without scanning every document.
 
 **What it is:** Retrieving relevant information and inserting it into the LLM's context at query time to ground the answer (reduce hallucination, enable citation).
 
-**Example** (5 steps): `chunk → embed → store → retrieve top-k → generate`
+**Example** (5 steps):
+
+<pre class="mermaid">
+flowchart LR
+  D["Documents"] --> C["chunk"] --> E["embed"] --> S["vector store"]
+  Q["Query"] --> R["retrieve top-k"]
+  S --> R --> G["LLM generate<br/>grounded answer"]
+</pre>
 
 **In OKF:** The wiki = Layer 1 (pre-synthesized; finding it in the wiki is sufficient); RAG = Layer 2 (mining raw documents when the wiki does not yet cover the topic).
 
@@ -85,7 +92,14 @@ Search "dog" → returns D3 immediately, without scanning every document.
 
 **What it is:** A graph of entities (nodes) + typed relationships (edges) — "things, not strings" — enabling entity-level disambiguation and reasoning.
 
-**Example:** `[Customer A] —ordered→ [Order 123] —contains→ [Product X]`
+**Example:**
+
+<pre class="mermaid">
+flowchart LR
+  CU["Customer A"] -->|orders| O["Order 123"]
+  O -->|contains| P["Product X"]
+  CU -->|in segment| SEG["High-value"]
+</pre>
 
 **In OKF:** The entire bundle forms a knowledge graph (concepts = nodes, links = edges) — viewable with `okf-viz.py`.
 

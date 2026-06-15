@@ -11,7 +11,7 @@ preferred-dark-theme = "navy"
 git-repository-url = "https://github.com/supachai-j/open-knowledge-format-starter"
 edit-url-template = "https://github.com/supachai-j/open-knowledge-format-starter/edit/main/book/{path}"
 additional-css = ["css/custom.css"]
-additional-js = ["js/lang-switch.js"]
+additional-js = ["js/mermaid.min.js", "js/mermaid-init.js", "js/lang-switch.js"]
 no-section-label = false
 
 [output.html.search]

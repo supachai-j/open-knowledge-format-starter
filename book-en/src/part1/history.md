@@ -1,167 +1,170 @@
 # History and Evolution of the Knowledge Base
 
-OKF did not emerge from thin air — it is the (provisional) destination of a journey spanning more than 60 years
-of human effort to make "knowledge" storable, searchable, and machine-usable. This chapter traces that path
-from the earliest era to the present and beyond, so you can see how OKF assembles lessons from each era.
+<p class="okf-lead"><span class="drop">F</span>or over sixty years, humanity has asked the same question again and again: "How do we make machines <em>remember</em> and <em>understand</em> what we know?" The answer has changed with every era — from hand-crafted rules, to semantic graphs, to word indexes, to interlinked notes, and most recently to AI that synthesizes knowledge on our behalf. This chapter is the story of that journey, and its (provisional) destination: OKF.</p>
 
-> Reference numbers `[n]` in this chapter point to the [Bibliography](../appendix/references.md)
+> Reference numbers `[n]` point to the [Bibliography](../appendix/references.md)
 
-## Timeline Overview
+<pre class="mermaid">
+flowchart LR
+  E1["1960s–80s<br/>Expert systems"] --> E2["1990s–2000s<br/>Semantic Web"] --> E3["1970s–2010s<br/>Databases &amp; IR"] --> E4["1995–2020<br/>Wiki &amp; PKM"] --> E5["2012–2020s<br/>AI / RAG"] --> E6["2026<br/>LLM-wiki &amp; OKF"]
+</pre>
 
-| Period | Era | Key Advance |
-|--------|-----|-------------|
-| 1960s–1980s | Expert systems & KR | Separating "knowledge" from "reasoning"; IF-THEN rules, frames |
-| 1990s–2000s | Ontologies & Semantic Web | RDF triples, OWL, linked data — machine-readable meaning |
-| 1970→2010s | Databases & IR | Relational DB, inverted index, TF-IDF, BM25, Lucene/Elasticsearch |
-| 1995→2020 | Wiki & PKM | Wikipedia, Zettelkasten, Markdown + `[[wikilinks]]` (Obsidian/Notion/Roam) |
-| 2012→2020s | AI era | Embeddings, vector DB, RAG, knowledge graph |
-| 2026→ | LLM-wiki & OKF | AI synthesizes knowledge into continuously maintained Markdown |
+## Act 1 — The Era We Tried to Hand-Feed Knowledge to Machines
 
-## Era 1 — Expert Systems & Knowledge Representation (1960s–1980s)
+In the 1960s at Stanford, a group of scientists believed that intelligence in a narrow domain could be captured by
+**encoding expert knowledge as rules** and letting a machine reason over them. They built **DENDRAL**
+(1965), which analyzed molecular structures from mass spectrometry data on par with a trained chemist [1] — the
+first time the world saw that "knowledge," not "search," was the real key to AI.
 
-This era rested on a simple belief: "intelligent behavior in a narrow domain can be captured by explicitly encoding
-expert knowledge and letting a machine reason over it." The key insight was **separating the knowledge base
-(what is known: facts/rules) from the inference engine (how to reason)** — an architecture that remains foundational to this day.
-
-- **DENDRAL** (1965, Feigenbaum/Buchanan/Lederberg, Stanford) — the first expert system, analyzing mass spectrometry [1]
-- **MYCIN** (early 1970s, Shortliffe, Stanford) — ~600 IF-THEN rules for diagnosing bacterial infections, using "certainty factors" to handle uncertainty [1]
-- **Frames** (1974, Minsky, MIT) — slot-filler structures for representing structured knowledge [1]
-- **Cyc** (1984, Lenat) — an attempt to hand-encode all commonsense knowledge → exposed the **"knowledge acquisition bottleneck"**: hand-entering knowledge does not scale [1]
-
-Example of a MYCIN-style rule:
+A few years later, **MYCIN** (early 1970s, Edward Shortliffe) used around 600 IF-THEN rules to diagnose
+bloodstream infections with accuracy matching senior physicians — and it could **explain its own reasoning** [1].
+The heart of MYCIN was an architecture that lives with us to this day: separating the **knowledge base**
+(what is known) from the **inference engine** (how to reason):
 
 ```
 IF   infection-type = primary-bacteremia
-AND  culture-site  = blood
+AND  culture-site   = blood
 AND  portal-of-entry = gastrointestinal-tract
 THEN there is suggestive evidence (CF = 0.4) that the organism is Bacteroides
 ```
 
-> **Lesson for OKF:** Separating "knowledge" from "the engine that uses knowledge" is the core principle —
-> OKF stores knowledge as files (producer) separately from the agents that consume it (consumer), exactly matching this pattern.
+But the dream hit a wall. In 1984, Douglas Lenat launched the **Cyc** project — an attempt to hand-encode
+*all* of human commonsense knowledge [1]. Decades and tens of millions of dollars later, the world learned an
+expensive lesson called the **"knowledge acquisition bottleneck"**: hand-entering knowledge can never scale.
 
-## Era 2 — Ontologies & the Semantic Web (1990s–2000s)
+> 🧬 **DNA inherited by OKF:** Separating "knowledge (files)" from "the engine that uses knowledge (agent)" — OKF's producer/consumer architecture is a direct descendant of this idea.
 
-In 2001, Tim Berners-Lee and colleagues proposed the **Semantic Web** in Scientific American [2]: extending the web
-from "documents for humans to read" to "data whose meaning machines can understand." The foundations were
-**RDF** (storing knowledge as *subject–predicate–object* triples = edges in a graph), **OWL** (an ontology
-language that allows a reasoner to infer new facts), and **SPARQL** (a graph query language) [2].
+## Act 2 — The Era We Tried to Give "Meaning" to the Web
 
-**Ontology** = a machine-readable specification of the concepts and relationships in a domain (not merely a taxonomy).
-
-Example RDF (Turtle):
+In 2001, the father of the web, **Tim Berners-Lee**, published an article in *Scientific American* dreaming of
+the **Semantic Web** [2] — a web that was not merely documents for humans to read, but data whose *meaning
+machines could understand*. He proposed storing knowledge as **triples** (subject–predicate–object), which
+are simply "edges in a graph":
 
 ```turtle
 @prefix ex: <http://example.org/> .
-@prefix schema: <https://schema.org/> .
-
-ex:TimBernersLee a schema:Person ;
-    schema:name "Tim Berners-Lee" ;
-    ex:invented ex:WorldWideWeb .
+ex:TimBernersLee  ex:invented  ex:WorldWideWeb .
 ```
 
-Each line `subject predicate object` is one triple — chained together they form a massive knowledge graph.
+With **RDF, OWL, and SPARQL**, machines could infer new facts from the graph automatically [2]. It was
+beautiful in theory — but writing a correct ontology was far beyond what ordinary people could manage.
+By 2013, fewer than 2% of websites used semantic markup. What survived and flourished instead were the
+"easier to use" successors: **linked data**, **schema.org** (2011), and the **knowledge graph** [2].
 
-Full adoption never spread widely (in 2013 fewer than 2% of websites used semantic markup) because formal
-representation is difficult. But the "practically usable" descendants survived: **linked data**, **schema.org** (2011),
-and the **knowledge graph** [2].
+> 🧬 **DNA into OKF:** Knowledge connected as a graph has enormous value — but OKF chose plain **Markdown links** (untyped) over strict RDF/OWL, so that people can actually write it.
 
-> **Lesson for OKF:** Machine-traversable relationships are valuable — OKF simplifies this with plain
-> **Markdown links** (untyped) instead of the RDF/OWL formalism that proves too demanding for everyday authors.
+## Act 3 — The Era We Learned to Search Intelligently
 
-## Era 3 — Databases & Information Retrieval (1970→2010s)
+While AI dreamed big, another line of work proceeded quietly — and changed the world. In 1970, **Edgar Codd**
+of IBM proposed the **relational model**, allowing data to be stored in tables and queried with SQL [3]. But it
+matched records exactly; it could not search free text and rank results by relevance.
 
-The journey from "exact matching" to "relevance ranking":
+The answer came from **Karen Spärck Jones** (1972), who proposed **IDF** — a simple but profound idea:
+*a word that appears in fewer documents is a stronger signal than one that appears everywhere* [3]. Combined
+with term frequency this became **TF-IDF**, and later **BM25** (~1994), which remains the standard for
+lexical search to this day. Here is a tiny example — the word "the" lives in every document and is worthless
+for discrimination, while the word "dog," found in a single document, stands out sharply:
 
-- **Relational model** (1970, Codd, IBM) — storing data in tables and querying with SQL, but matching fields exactly [3]
-- **TF-IDF** — Luhn (1957) showed that word frequency correlates with relevance; Spärck Jones (1972) added **IDF**: words appearing in fewer documents carry a stronger signal [3]
-- **BM25** (~1994, Robertson & Spärck Jones, Okapi system) — adds length normalization and saturation; still the baseline for lexical search today [3]
-- **Lucene** (1999, Doug Cutting) and **Elasticsearch** (2010) — bringing industrial-grade full-text search to everyone [3]
+| Term | Documents | Distinctiveness |
+|------|-----------|-----------------|
+| the  | D1, D2, D3 | 0 (useless) |
+| dog  | D3 | high |
 
-Example inverted index for three small documents:
+When **Doug Cutting** released **Lucene** (1999) and later **Elasticsearch** (2010), industrial-grade
+full-text search landed in everyone's hands [3]. The one limitation that lingered: it was *lexical* — searching
+"car" would miss "automobile" because it understood no meaning.
 
-| Term | Posting list |
-|------|--------------|
-| cat | D1, D2 |
-| sat | D1, D3 |
-| dog | D3 |
+> 🧬 **DNA into OKF:** BM25 is still powerful and lightweight — `tools/okf-index.py` uses it as the primary search method.
 
-**Main limitation:** it is *lexical* — it matches exact terms. Searching "car" misses a document that says "automobile" (no understanding of meaning or synonymy).
+## Act 4 — The Era Knowledge Became Everyone's
 
-> **Lesson for OKF:** BM25 is still powerful and lightweight — `tools/okf-index.py` uses BM25 as its primary search method.
+In 1995, **Ward Cunningham** created **WikiWikiWeb**, the first website that anyone could edit [4]. Six years
+later, **Wikipedia** (2001) proved that humanity's collective knowledge could grow through open contribution [4].
 
-## Era 4 — Wiki & Personal Knowledge Management (1995→2020)
+But the most remarkable story had unfolded earlier, on the desk of a German sociologist. **Niklas Luhmann**
+had accumulated a **Zettelkasten** of some 90,000 index cards, each linked to others. He produced more than
+50 books from it and left behind an immortal principle: **"The value lies not in the individual note, but in the
+links between notes."** [4]
 
-- **WikiWikiWeb** (25 Mar 1995, Ward Cunningham) — the first editable web, with automatic linking via CamelCase [4]
-- **Wikipedia** (15 Jan 2001, Wales & Sanger) — a community-edited open encyclopedia; the largest in history [4]
-- **Zettelkasten** (Niklas Luhmann, 1950s–1998) — ~90,000 interconnected index cards; produced 50+ books. **The value lies in the "links between notes", not the notes themselves** [4]
-- **Notion** (2016), **Roam** (2019, bidirectional links), **Obsidian** (2020, local-first Markdown + graph view) [4]
-
-Markdown won the format wars because **humans can read it without rendering and machines can read it without a special parser**.
-
-Example PKM-style Markdown note:
+The digital age rediscovered this principle around 2016–2020 through **Notion, Roam, and Obsidian** — all
+built on **Markdown + `[[wikilinks]]`**, which won the format wars for compounding reasons: *humans can read
+it without rendering, and machines can parse it without a special parser* [4].
 
 ```markdown
 ---
 title: "Zettelkasten Principle"
-tags: [pkm, luhmann]
+tags: [pkm]
 ---
-The value of the card box lies in the **links between notes**, not the individual notes themselves.
-See also: [[Bidirectional Links]], [[Obsidian]]
+The value of the card box lies in the **links between notes** — see also [[Obsidian]]
 ```
 
-> **Lesson for OKF:** This is OKF's direct DNA — Markdown + YAML frontmatter + links between concepts.
+> 🧬 **DNA into OKF:** This is the most direct lineage — Markdown + YAML frontmatter + links between concepts is exactly what OKF looks like.
 
-## Era 5 — AI Era: Embeddings, Vector Search, RAG (2012→2020s)
+## Act 5 — The Era "Meaning" Became Geometry
 
-Core idea: **"meaning = geometry"**
+In 2013, **Tomas Mikolov**'s team at Google revealed something that looked like magic: **word2vec** converted
+words into vectors where "similar meaning = nearby position," making arithmetic of meaning possible [5].
 
-- **Google Knowledge Graph** (2012, Singhal) — "things, not strings": 500M entities, 3.5B relationships [5]
-- **word2vec** (2013, Mikolov, Google) — embedding words as vectors, capturing analogies such as `king − man + woman ≈ queen` [5]
-- **FAISS** (2017, Facebook AI) — approximate nearest-neighbor (ANN) search over billions of vectors [5]
-- **BERT** (2018, Devlin, Google) — contextual embeddings (the same word gets a different vector depending on context) [5]
-- **RAG** (2020, Lewis et al., Facebook AI) — retrieving relevant passages to ground LLM answers and reduce hallucination [5]
-- **Hybrid search + RRF** (RRF: Cormack et al., 2009) — combining BM25 + semantic with `Σ 1/(k+rank)` [5]
+<pre class="mermaid">
+flowchart LR
+  K["king"] -- " − man + woman " --> Q["≈ queen"]
+</pre>
 
-RAG pipeline example: chunk → embed → store → retrieve top-k → generate
+The years that followed accelerated relentlessly: **Google Knowledge Graph** (2012, "things, not strings"),
+**FAISS** (2017) searching billions of vectors, **BERT** (2018) giving the same word different meanings
+depending on context [5]. Then in 2020, **RAG** (Lewis et al.) arrived to fix the largest weakness of LLMs —
+fabrication — by retrieving real evidence to ground answers [5]:
 
-> **Lesson for OKF:** OKF is Layer 1 (pre-synthesized knowledge); RAG/vector is Layer 2 (mining raw sources).
-> `okf-search.py` combines BM25 + semantic with RRF, following this era's patterns.
+<pre class="mermaid">
+flowchart LR
+  D["Documents"] --> C["Chunk"] --> EM["Embed"] --> S["Vector store"]
+  Q["Query"] --> R["Retrieve top-k"]
+  S --> R --> G["LLM generate<br/>grounded answer"]
+</pre>
 
-## Era 6 — Present: LLM-wiki & Open Knowledge Format (2026)
+And to combine the strengths of "exact term matching (BM25)" with "semantic matching (vector)," the world
+reached for **Reciprocal Rank Fusion** (RRF, 2009), producing the **hybrid search** that is today's
+default [5].
 
-In April 2026, **Andrej Karpathy** proposed the concept of an **"LLM wiki"** [6]: instead of retrieving raw chunks
-on every query, have an agent **compile raw sources into organized, interlinked, continuously maintained Markdown**
-— synthesize once at ingest, not on every query; knowledge **compounds**.
+> 🧬 **DNA into OKF:** wiki = Layer 1 (pre-synthesized); RAG/vector = Layer 2 (mining raw sources); `okf-search.py` fuses BM25 + semantic with RRF.
 
-On 12 June 2026, **Google Cloud** (Sam McVeety, Amir Hormati) published **Open Knowledge Format (OKF)
-v0.1** [6] — an open specification that standardizes the LLM-wiki pattern: a directory of Markdown files + YAML
-frontmatter, requiring only a `type` field, with separate producer/consumer roles, portable across clouds and frameworks.
+## Act 6 — The Present: When AI Takes Care of Knowledge Itself
 
-Before this, **MemGPT/Letta** (2023, Packer et al., UC Berkeley) [6] demonstrated "LLM as OS" — managing memory
-in a tiered fashion (in-context = RAM, external = disk), paving the way toward agents with persistent memory.
+In April 2026, **Andrej Karpathy** posted a short idea that ignited the entire field: **"LLM wiki"** [6] — instead
+of retrieving raw chunks on every query (as RAG does), have an agent **compile raw sources into organized,
+interlinked, continuously maintained Markdown**. Synthesize once at ingest; knowledge therefore **compounds** —
+the more you use it, the richer it gets, rather than starting from zero every time.
 
-## The Future — Self-Maintaining & Agentic Knowledge
+Two months later, on 12 June 2026, **Google Cloud** (Sam McVeety, Amir Hormati) made this pattern an open
+standard under the name **Open Knowledge Format (OKF) v0.1** [6] — a directory of Markdown files + YAML
+frontmatter requiring only a `type` field, with separate producer/consumer roles, portable across clouds and
+frameworks.
 
-The direction is a **self-maintaining knowledge base**: agents do not merely "query" knowledge — they
-**curate it** — checking whether information is stale (via `timestamp`/`log.md`), reconciling conflicts across
-concepts, and proposing updates for human approval before committing [6].
+Before that, **MemGPT/Letta** (2023) had already demonstrated "LLM as OS" — managing memory in a tiered
+fashion (in-context = RAM, external = disk) and paving the way for agents with persistent memory [6].
 
-The next layer will likely be a **hybrid wiki + RAG** architecture: the pre-synthesized wiki serves as a fast index
-while RAG fills gaps for rapidly-changing or too-voluminous-to-precompile data — with an agent memory runtime
-(e.g., Letta) underneath, and multi-agent systems that divide responsibilities (one agent curates knowledge, others
-consume it), moving toward what is beginning to be called **"compiled-knowledge generation"**.
+## Epilogue — And the Future That Is Coming
 
-## Summary: How History Shaped OKF
+The direction ahead is a **self-maintaining knowledge base**: agents do not merely "query" knowledge — they
+*curate* it — checking whether information has gone stale (via `timestamp`/`log.md`), reconciling conflicts
+across concepts, and proposing updates for human approval before committing [6]. The next layer will likely be
+a **hybrid wiki + RAG** architecture: the pre-synthesized wiki serves as a fast index, while RAG fills gaps
+for data that changes too frequently to precompile — with agent memory as the runtime and multi-agent systems
+dividing responsibilities for curating and consuming knowledge, moving toward what is beginning to be called
+**"compiled-knowledge generation"**.
 
-OKF does not reinvent everything — it **assembles the best parts of each era**:
+## Why OKF Is the Sum of All Six Acts
 
-| From era | What OKF takes |
-|----------|----------------|
-| Expert systems | Separating knowledge (files) from the engine that uses it (agent) |
-| Semantic Web | Knowledge as an interconnected graph (but using simple Markdown links) |
-| IR / BM25 | Lightweight and powerful search |
-| Wiki / PKM | Markdown + frontmatter + `[[links]]`, human-readable, version-controllable |
-| AI era | Embeddings/RAG as an optional layer + AI-synthesized knowledge |
+OKF does not reinvent everything — it **fuses the best parts of every era into one**. Six streams converge into a single confluence:
 
-Next, read [Core Concepts Explained (with Examples)](./foundations.md)
+<pre class="mermaid">
+flowchart TD
+  A["Expert systems<br/>knowledge vs. engine"] --> OKF
+  B["Semantic Web<br/>knowledge as a connected graph"] --> OKF
+  C["IR / BM25<br/>fast and lightweight search"] --> OKF
+  D["Wiki / PKM<br/>Markdown + links, readable &amp; versionable"] --> OKF
+  E["AI / RAG<br/>embeddings + AI synthesis"] --> OKF
+  OKF["✦ Open Knowledge Format ✦"]
+</pre>
+
+Next, dive into the [Core Concepts Explained (with Examples)](./foundations.md) introduced throughout this chapter.
