@@ -87,7 +87,8 @@
 .okf-tocpage ul { margin-top: 0.15rem; }
 .okf-tocpage .okf-leader, .okf-tocpage .okf-pg { display: none; }   /* web: plain clickable list */
 @media print {
-  .okf-tocpage { page-break-before: always; page-break-after: always; }
+  /* no page-break here: mdBook already starts each chapter on a fresh page; adding our
+     own break double-broke and left a blank page before the TOC. */
   .okf-tocpage ul { list-style: none; padding-left: 0.4rem; }
   .okf-tocpage li { display: flex; align-items: flex-end; }
   .okf-tocpage li > a { flex: 0 1 auto; }
