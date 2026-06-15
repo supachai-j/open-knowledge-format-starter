@@ -52,6 +52,7 @@ git clone https://github.com/supachai-j/open-knowledge-format-starter.git
 cd open-knowledge-format-starter
 python3 tools/okf-validate.py          # → ✓ CONFORMANT with OKF v0.1
 python3 tools/okf-viz.py               # → writes wiki/viz.html, open it in any browser
+bash    tools/okf-selftest.sh          # → exercises the whole toolchain (10 checks)
 ```
 
 1. Read **[AGENTS.md](AGENTS.md)** — governs how concepts are structured and how the agent behaves.

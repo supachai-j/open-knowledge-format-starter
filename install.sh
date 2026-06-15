@@ -50,4 +50,4 @@ echo "    $SKILL_DIR/SKILL.md"
 echo "    $SKILL_DIR/scripts/  ($(ls "$SKILL_DIR/scripts"/*.py | wc -l | tr -d ' ') scripts + vendor/)"
 echo
 echo "Use it: open Claude Code and say e.g. \"init an OKF knowledge base here\" or \"/okf\"."
-[ "$MODE" = "global" ] && echo "Installed globally — available in every project."
+if [ "$MODE" = "global" ]; then echo "Installed globally — available in every project."; fi

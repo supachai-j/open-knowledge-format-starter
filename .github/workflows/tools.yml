@@ -1,0 +1,26 @@
+# Regression-test the OKF toolchain (pure-stdlib) on every change to tools/skill/installer.
+name: tools-selftest
+on:
+  push:
+    paths: ["tools/**", "skill/**", "install.sh", ".github/workflows/tools.yml"]
+  pull_request:
+    paths: ["tools/**", "skill/**", "install.sh"]
+  workflow_dispatch:
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: OKF toolchain self-test
+        run: bash tools/okf-selftest.sh     # embeddings/hybrid auto-skip (no Ollama in CI)
+      - name: installer smoke test (must exit 0)
+        run: |
+          ./install.sh --dir /tmp/okf-skill
+          test -f /tmp/okf-skill/okf/SKILL.md
+          test "$(ls /tmp/okf-skill/okf/scripts/*.py | wc -l)" -ge 6
+          ./install.sh --uninstall --dir /tmp/okf-skill
+          test ! -d /tmp/okf-skill/okf
