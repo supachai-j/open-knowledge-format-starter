@@ -38,3 +38,6 @@ Every concept must have a non-empty `type` in its frontmatter. Add `type: ...` (
 
 ### How do I migrate an existing wiki (Obsidian, etc.) into OKF?
 In most cases: add a `type` field to each frontmatter, add `index.md`/`log.md`, convert links to relative paths, then run validate.
+
+### How do I verify the whole toolchain works?
+Run `bash tools/okf-selftest.sh` — 10 end-to-end checks (init/validate/index/search/viz/lease + embed/hybrid if Ollama is up); exits non-zero on any failure. See the [Worked Example](../part4/worked-example.md) for a hands-on full-loop walkthrough.

@@ -49,6 +49,14 @@ python3 tools/okf-lease.py break   <concept>      # admin force-release
 ```
 env: `OKF_LEASE_DIR` (lease storage location), `OKF_LEASE_TTL` (default 300)
 
+## okf-selftest.sh — exercise the whole toolchain
+```bash
+bash tools/okf-selftest.sh
+```
+Runs 10 end-to-end checks (init → validate both a clean bundle and a deliberately-broken one →
+index → search → air-gap viz → lease → embed/hybrid if Ollama is up) · exits non-zero on any
+failure · suitable for CI.
+
 ## install.sh — Install Skill
 ```bash
 ./install.sh                 # global  → ~/.claude/skills/okf

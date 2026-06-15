@@ -29,6 +29,7 @@
 - [Query และ Search](./part4/query-search.md)
 - [เพิ่มและแก้ไข concept](./part4/authoring.md)
 - [Validate และ Visualize](./part4/validate-viz.md)
+- [ตัวอย่างใช้งานจริง: KB ร้านหนังสือ](./part4/worked-example.md)
 
 # ภาคที่ 5 — เขียนให้ดี
 

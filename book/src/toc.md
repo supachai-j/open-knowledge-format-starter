@@ -28,6 +28,7 @@
 - [Query และ Search](./part4/query-search.md)<span class="okf-leader"></span><span class="okf-pg"></span>
 - [เพิ่มและแก้ไข concept](./part4/authoring.md)<span class="okf-leader"></span><span class="okf-pg"></span>
 - [Validate และ Visualize](./part4/validate-viz.md)<span class="okf-leader"></span><span class="okf-pg"></span>
+- [ตัวอย่างใช้งานจริง: KB ร้านหนังสือ](./part4/worked-example.md)<span class="okf-leader"></span><span class="okf-pg"></span>
 
 **ภาคที่ 5 — เขียนให้ดี**
 

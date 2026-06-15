@@ -28,6 +28,7 @@
 - [Query and Search](./part4/query-search.md)<span class="okf-leader"></span><span class="okf-pg"></span>
 - [Adding and editing concepts](./part4/authoring.md)<span class="okf-leader"></span><span class="okf-pg"></span>
 - [Validate and Visualize](./part4/validate-viz.md)<span class="okf-leader"></span><span class="okf-pg"></span>
+- [Worked example: a bookstore KB](./part4/worked-example.md)<span class="okf-leader"></span><span class="okf-pg"></span>
 
 **Part 5 — Authoring Well**
 

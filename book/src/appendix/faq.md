@@ -44,3 +44,6 @@ filing, bookkeeping
 
 ### จะ migrate wiki เดิม (Obsidian ฯลฯ) เข้า OKF ยังไง?
 ส่วนใหญ่แค่เพิ่มฟิลด์ `type` ใน frontmatter + เพิ่ม `index.md`/`log.md` + ปรับลิงก์ให้ relative แล้วรัน validate
+
+### จะตรวจว่า toolchain ใช้ได้จริงทั้งชุดยังไง?
+รัน `bash tools/okf-selftest.sh` — เทสต์ end-to-end 10 ข้อ (init/validate/index/search/viz/lease + embed/hybrid ถ้ามี Ollama) exit ≠ 0 ถ้ามีข้อพลาด · ดู[ตัวอย่างใช้งานจริง](../part4/worked-example.md) สำหรับการเดินครบลูปด้วยมือ

@@ -29,6 +29,7 @@
 - [Query and Search](./part4/query-search.md)
 - [Adding and editing concepts](./part4/authoring.md)
 - [Validate and Visualize](./part4/validate-viz.md)
+- [Worked example: a bookstore KB](./part4/worked-example.md)
 
 # Part 5 — Authoring Well
 
