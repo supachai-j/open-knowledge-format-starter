@@ -37,10 +37,13 @@ book/                ← Thai manual (mdBook) → GitHub Pages; beginner → ent
 research/            ← OKF best-practice report, mind map, and reference-impl findings
 ```
 
-## 📖 คู่มือภาษาไทย (Thai manual)
+## 📖 Manual / คู่มือ (bilingual)
 
-A full beginner→enterprise manual in Thai is published from [`book/`](book/) via mdBook:
-**<https://supachai-j.github.io/open-knowledge-format-starter/>** (built & deployed by `.github/workflows/book.yml`).
+A full beginner→enterprise handbook, built with mdBook and deployed to GitHub Pages by
+`.github/workflows/book.yml` (cover page, in-page TOC, language switcher, embedded example graph, PDF):
+
+- 🇹🇭 **ภาษาไทย:** <https://supachai-j.github.io/open-knowledge-format-starter/> — source in [`book/`](book/)
+- 🇬🇧 **English:** <https://supachai-j.github.io/open-knowledge-format-starter/en/> — source in [`book-en/`](book-en/)
 
 ## Quickstart
 

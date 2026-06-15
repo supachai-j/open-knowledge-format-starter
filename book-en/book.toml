@@ -1,0 +1,23 @@
+[book]
+title = "The Open Knowledge Format (OKF) Handbook"
+authors = ["Supachai-ja"]
+description = "An English user handbook for building and operating an AI-maintained knowledge base with the Open Knowledge Format — from beginner to enterprise."
+language = "en"
+src = "src"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/supachai-j/open-knowledge-format-starter"
+edit-url-template = "https://github.com/supachai-j/open-knowledge-format-starter/edit/main/book-en/{path}"
+additional-css = ["css/custom.css"]
+additional-js = ["js/lang-switch.js"]
+no-section-label = false
+
+[output.html.search]
+enable = true
+limit-results = 20
+
+[output.html.fold]
+enable = true
+level = 1

@@ -47,6 +47,14 @@ python3 tools/okf-viz.py ./wiki --name "My Wiki"
 
 > ค่าเริ่มต้นจะ **ฝังไลบรารีจาก `tools/vendor/`** ทำให้ air-gap ได้จริง ถ้าต้องการใช้ CDN ใส่ `--cdn`
 
+### ลองเล่นของจริง
+
+ด้านล่างคือ `viz.html` ของ wiki ตัวอย่างในโปรเจกต์นี้ (คลิกที่ node เพื่อดูรายละเอียด ลองค้นหา/กรองตาม type ได้):
+
+<iframe src="../viz-example.html" title="OKF graph ตัวอย่าง" loading="lazy" style="width:100%;height:520px;border:1px solid var(--table-border-color,#ddd);border-radius:12px;margin:0.5rem 0;"></iframe>
+
+[เปิดแบบเต็มจอ →](../viz-example.html)
+
 ## ทำให้เป็นนิสัย
 
 รวมสองคำสั่งนี้หลังการแก้ทุกครั้ง:
