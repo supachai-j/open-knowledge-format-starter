@@ -18,6 +18,9 @@ venv/
 # Local deploy secrets
 deploy/.env
 
+# mdBook build output
+book/book/
+
 # Raw sources are often large or private — keep the folder, ignore real contents.
 # Comment these out if you WANT to version your sources.
 raw/*

@@ -1,0 +1,25 @@
+/* Thai typography tweaks for readability (see translating-to-thai-technical conventions). */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap');
+
+:root {
+  --content-max-width: 760px;
+}
+
+.content {
+  font-family: "Noto Sans Thai", "Sarabun", system-ui, sans-serif;
+  line-height: 1.75;
+}
+
+.content h1, .content h2, .content h3 {
+  font-family: "Noto Sans Thai", system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* keep code/identifiers in a clear monospace, unaffected by the Thai font */
+.content code, .content pre, .hljs {
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+.content table { line-height: 1.6; }
+.content blockquote { border-inline-start: 3px solid var(--quote-border); }

@@ -1,0 +1,22 @@
+[book]
+title = "คู่มือ Open Knowledge Format (OKF)"
+authors = ["Supachai-ja"]
+description = "คู่มือผู้ใช้งานภาษาไทยสำหรับสร้างและดูแล knowledge base ด้วย Open Knowledge Format — ตั้งแต่เริ่มต้นจนถึงระดับองค์กร"
+language = "th"
+src = "src"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/supachai-j/open-knowledge-format-starter"
+edit-url-template = "https://github.com/supachai-j/open-knowledge-format-starter/edit/main/book/{path}"
+additional-css = ["css/custom.css"]
+no-section-label = false
+
+[output.html.search]
+enable = true
+limit-results = 20
+
+[output.html.fold]
+enable = true
+level = 1

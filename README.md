@@ -33,8 +33,14 @@ server/              ← okf_mcp_server.py — self-hostable MCP access layer fo
 deploy/              ← docker-compose (gitea + MCP + TLS proxy) for on-prem self-hosting
 .gitea/ ci/          ← conformance CI gate (Gitea Actions / GitLab CI)
 docs/                ← USAGE.md (how-to, EN/TH) + GUIDELINES.md + ENTERPRISE.md (self-host architecture)
+book/                ← Thai manual (mdBook) → GitHub Pages; beginner → enterprise
 research/            ← OKF best-practice report, mind map, and reference-impl findings
 ```
+
+## 📖 คู่มือภาษาไทย (Thai manual)
+
+A full beginner→enterprise manual in Thai is published from [`book/`](book/) via mdBook:
+**<https://supachai-j.github.io/open-knowledge-format-starter/>** (built & deployed by `.github/workflows/book.yml`).
 
 ## Quickstart
 
