@@ -10,22 +10,21 @@
 
 ## แผนภาพ
 
-```
-                ┌─────────────── เครือข่ายภายใน ────────────────┐
-  ทีม A ─┐      │   ┌──────────┐   pull / webhook                │
- (agent) │ MCP  │   │ Git server│◄──────────────┐                │
-  ทีม B ─┼─────►│   │ (Gitea/   │   ┌────────────┴──────────┐    │
- (agent) │(HTTP/│   │  GitLab)  │   │   OKF MCP server      │    │
- CI/cron─┘ SSE +│   │ = OKF repo│   │  search · get ·       │    │
-           token│   └─────┬─────┘   │  propose / commit     │    │
-           /mTLS)│        │ PR/MR    │  (FastMCP)            │    │
-                 │        ▼          └──────────┬────────────┘    │
-                 │   ┌──────────┐    builds     │ search index    │
-                 │   │ CI runner │              ▼ (BM25 +/- embed) │
-                 │   │ validate  │                                 │
-                 │   └──────────┘                                 │
-                 └────────────────────────────────────────────────┘
-```
+<pre class="mermaid">
+flowchart TB
+  subgraph net["เครือข่ายภายใน (on-prem / air-gap)"]
+    MCP["OKF MCP server<br/>search · get · propose / commit"]
+    GIT["Git server (Gitea/GitLab)<br/>= OKF repo · ต้นทางความจริง"]
+    IDX["Search index<br/>BM25 (+ semantic)"]
+    CI["CI runner<br/>okf-validate + viz"]
+    MCP -->|"pull / webhook"| GIT
+    MCP --> IDX
+    GIT -->|"PR/MR triggers"| CI
+  end
+  A1["Agent team A"] -->|"MCP: HTTP/SSE + token/mTLS"| MCP
+  A2["Agent team B"] --> MCP
+  CR["CI / cron"] --> MCP
+</pre>
 
 ## องค์ประกอบ
 

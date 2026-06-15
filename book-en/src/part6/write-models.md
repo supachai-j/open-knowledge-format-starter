@@ -12,6 +12,16 @@ When multiple agents write knowledge concurrently, you must choose how to manage
 3. Opens a PR/MR via the git server API and returns the URL
 4. CI runs `okf-validate.py` (+ regenerates viz) → a human/curator reviews and merges
 
+<pre class="mermaid">
+flowchart LR
+  AG["Agent"] -->|propose_change| BR["branch + commit"]
+  BR --> PR["Pull Request"]
+  PR --> CIv["CI: okf-validate"]
+  CIv --> RV["review (human/curator)"]
+  RV -->|merge| MAIN["main"]
+  MAIN -->|webhook| RE["MCP pull + reindex"]
+</pre>
+
 Full enterprise properties: **audit trail** (git log), **review/diff**, **rollback** (git revert),
 **no write conflicts** (merges applied one at a time in order), **quality gate** (CI + review)
 
@@ -31,6 +41,15 @@ okf_acquire_lease("tables/orders", ttl_seconds=300)   # → {token, expires_at}
 okf_commit_concept("tables/orders", frontmatter, body, token=...)   # server checks lease then write+commit+push
 okf_release_lease("tables/orders", token=...)         # release when done
 ```
+
+<pre class="mermaid">
+flowchart LR
+  ACQ["acquire_lease<br/>(TTL)"] --> ED["edit concept"]
+  ED --> CM["commit_concept<br/>(verify token)"]
+  CM --> PUSH["pull --rebase + push"]
+  PUSH --> REL["release_lease"]
+  OT["another agent requests the same concept"] -.->|locked| ACQ
+</pre>
 
 Another agent requesting the same concept receives `{error:"locked", held_by}` → it works on something else instead.
 Concurrency safety: the lease prevents duplicate concepts + `git pull --rebase` before push handles

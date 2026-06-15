@@ -9,7 +9,7 @@
 <a class="okf-btn" href="./okf-manual-th.pdf">📄 ดาวน์โหลด PDF</a>
 <a class="okf-btn" href="./viz-example.html">🕸 ดู graph ตัวอย่าง</a>
 </div>
-<div class="okf-cover-meta">โดย <strong>Supachai-ja</strong> · ปรับปรุงล่าสุด <span id="okf-date">2026-06-15</span> · OKF v0.1</div>
+<div class="okf-cover-meta">เรียบเรียงโดย <strong>Supachai Jaturaprom [TumEz]</strong><br/>เขียนโดย Claude Code — Opus 4.8 (AI) · ปรับปรุง <span id="okf-date">2026-06-15</span> · OKF v0.1</div>
 </div>
 
 # คำนำ
@@ -23,13 +23,13 @@
 ## สารบัญ
 
 <div class="okf-toc-grid">
-<a class="okf-toc-card" href="./part1/what-is-okf.md"><span class="num">ภาคที่ 1</span><span class="ttl">รู้จัก OKF</span><span class="dsc">OKF คืออะไร และทำไมถึงดีกว่า RAG แบบเดิม</span></a>
-<a class="okf-toc-card" href="./part2/install.md"><span class="num">ภาคที่ 2</span><span class="ttl">เริ่มต้นใช้งาน</span><span class="dsc">ติดตั้ง · สร้าง KB แรก · โครงสร้างโปรเจกต์</span></a>
-<a class="okf-toc-card" href="./part3/concepts.md"><span class="num">ภาคที่ 3</span><span class="ttl">แนวคิดหลัก</span><span class="dsc">concept · frontmatter · การลิงก์ · ไฟล์สงวน</span></a>
-<a class="okf-toc-card" href="./part4/ingest.md"><span class="num">ภาคที่ 4</span><span class="ttl">การใช้งานประจำวัน</span><span class="dsc">ingest · query/search · เขียน concept · validate/viz</span></a>
-<a class="okf-toc-card" href="./part5/best-practices.md"><span class="num">ภาคที่ 5</span><span class="ttl">เขียนให้ดี</span><span class="dsc">แนวทางการเขียนและ anti-patterns</span></a>
-<a class="okf-toc-card" href="./part6/architecture.md"><span class="num">ภาคที่ 6</span><span class="ttl">ระดับองค์กร</span><span class="dsc">self-host · MCP · write models · security</span></a>
-<a class="okf-toc-card" href="./appendix/tools.md"><span class="num">ภาคผนวก</span><span class="ttl">อ้างอิง</span><span class="dsc">CLI reference · FAQ · อภิธานศัพท์</span></a>
+<a class="okf-toc-card" href="./part1/what-is-okf.md"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="8" x2="12" y2="8"/></svg><span class="num">ภาคที่ 1</span><span class="ttl">รู้จัก OKF</span><span class="dsc">OKF คืออะไร · ประวัติศาสตร์ · ทำไมดีกว่า RAG</span></a>
+<a class="okf-toc-card" href="./part2/install.md"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="8 5 19 12 8 19 8 5"/></svg><span class="num">ภาคที่ 2</span><span class="ttl">เริ่มต้นใช้งาน</span><span class="dsc">ติดตั้ง · สร้าง KB แรก · โครงสร้างโปรเจกต์</span></a>
+<a class="okf-toc-card" href="./part3/concepts.md"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5"/><path d="M12 12v9"/><path d="M12 12L4 7.5"/></svg><span class="num">ภาคที่ 3</span><span class="ttl">แนวคิดหลัก</span><span class="dsc">concept · frontmatter · การลิงก์ · ไฟล์สงวน</span></a>
+<a class="okf-toc-card" href="./part4/ingest.md"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3"/><line x1="13" y1="15" x2="17" y2="15"/></svg><span class="num">ภาคที่ 4</span><span class="ttl">การใช้งานประจำวัน</span><span class="dsc">ingest · query/search · เขียน concept · validate/viz</span></a>
+<a class="okf-toc-card" href="./part5/best-practices.md"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/><line x1="14" y1="7" x2="17" y2="10"/></svg><span class="num">ภาคที่ 5</span><span class="ttl">เขียนให้ดี</span><span class="dsc">แนวทางการเขียนและ anti-patterns</span></a>
+<a class="okf-toc-card" href="./part6/architecture.md"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><line x1="7" y1="7.5" x2="7" y2="7.5"/><line x1="7" y1="16.5" x2="7" y2="16.5"/></svg><span class="num">ภาคที่ 6</span><span class="ttl">ระดับองค์กร</span><span class="dsc">self-host · MCP · write models · security</span></a>
+<a class="okf-toc-card" href="./appendix/tools.md"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v16l-6-4-6 4z"/></svg><span class="num">ภาคผนวก</span><span class="ttl">อ้างอิง</span><span class="dsc">CLI reference · FAQ · อภิธานศัพท์ · บรรณานุกรม</span></a>
 </div>
 
 ## หนังสือเล่มนี้เหมาะกับใคร

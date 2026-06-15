@@ -79,6 +79,8 @@
 }
 .okf-toc-card .ttl { display: block; font-weight: 700; color: var(--fg); margin-bottom: 0.2rem; }
 .okf-toc-card .dsc { display: block; font-size: 0.85rem; color: var(--sidebar-fg, #6b7280); line-height: 1.5; }
+.okf-toc-card svg.ico { width: 26px; height: 26px; color: #8b5cf6; display: block; margin-bottom: 0.45rem; }
+.okf-cover-meta br { line-height: 2; }
 
 /* language switch button injected into the top menu bar */
 #okf-lang { font-weight: 700; }

@@ -1,6 +1,6 @@
 [book]
 title = "คู่มือ Open Knowledge Format (OKF)"
-authors = ["Supachai-ja"]
+authors = ["Supachai Jaturaprom [TumEz] (compiler)", "Claude Code — Opus 4.8 (AI, author)"]
 description = "คู่มือผู้ใช้งานภาษาไทยสำหรับสร้างและดูแล knowledge base ด้วย Open Knowledge Format — ตั้งแต่เริ่มต้นจนถึงระดับองค์กร"
 language = "th"
 src = "src"

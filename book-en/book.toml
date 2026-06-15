@@ -1,6 +1,6 @@
 [book]
 title = "The Open Knowledge Format (OKF) Handbook"
-authors = ["Supachai-ja"]
+authors = ["Supachai Jaturaprom [TumEz] (compiler)", "Claude Code — Opus 4.8 (AI, author)"]
 description = "An English user handbook for building and operating an AI-maintained knowledge base with the Open Knowledge Format — from beginner to enterprise."
 language = "en"
 src = "src"

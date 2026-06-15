@@ -12,6 +12,16 @@
 3. เปิด PR/MR ผ่าน API ของ git server แล้วคืน URL
 4. CI รัน `okf-validate.py` (+ regen viz) → คน/curator รีวิวและ merge
 
+<pre class="mermaid">
+flowchart LR
+  AG["Agent"] -->|propose_change| BR["branch + commit"]
+  BR --> PR["Pull Request"]
+  PR --> CIv["CI: okf-validate"]
+  CIv --> RV["review (คน/curator)"]
+  RV -->|merge| MAIN["main"]
+  MAIN -->|webhook| RE["MCP pull + reindex"]
+</pre>
+
 ได้คุณสมบัติ enterprise ครบ: **audit trail** (git log), **review/diff**, **rollback** (git revert),
 **ไม่มี write conflict** (merge ทีละครั้งตามลำดับ), **quality gate** (CI + review)
 
@@ -31,6 +41,15 @@ okf_acquire_lease("tables/orders", ttl_seconds=300)   # → {token, expires_at}
 okf_commit_concept("tables/orders", frontmatter, body, token=...)   # server ตรวจ lease แล้ว write+commit+push
 okf_release_lease("tables/orders", token=...)         # คืนเมื่อเสร็จ
 ```
+
+<pre class="mermaid">
+flowchart LR
+  ACQ["acquire_lease<br/>(TTL)"] --> ED["edit concept"]
+  ED --> CM["commit_concept<br/>(verify token)"]
+  CM --> PUSH["pull --rebase + push"]
+  PUSH --> REL["release_lease"]
+  OT["agent อื่น ขอ concept เดียวกัน"] -.->|locked| ACQ
+</pre>
 
 agent อื่นที่ขอ concept เดียวกันจะได้ `{error:"locked", held_by}` → ไปทำตัวอื่น
 ความปลอดภัยจาก concurrency: lease กัน concept ซ้ำ + `git pull --rebase` ก่อน push จัดการ
