@@ -11,7 +11,7 @@
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 
-const [, , input, output, headerTitle, mode = 'body'] = process.argv;
+const [, , input, output, headerTitle, mode = 'body', credit = ''] = process.argv;
 if (!input || !output) {
   console.error('usage: print-pdf.js <input.html> <output.pdf> <headerTitle> <cover|body>');
   process.exit(2);
@@ -41,10 +41,14 @@ function findChrome() {
       opts.pageRanges = '1';
       opts.displayHeaderFooter = false;
     } else {
-      const s = "font-family:'Noto Sans Thai','Loma','TLwg Typo',sans-serif;font-size:8px;color:#9aa3af;width:100%;padding:0 15mm;text-align:center;";
+      const base = "font-family:'Noto Sans Thai','Loma','TLwg Typo',sans-serif;color:#9aa3af;";
       opts.displayHeaderFooter = true;
-      opts.headerTemplate = `<div style="${s}">${headerTitle || ''}</div>`;
-      opts.footerTemplate = `<div style="${s}"><span class="pageNumber"></span> / <span class="totalPages"></span></div>`;
+      opts.headerTemplate = `<div style="${base}font-size:8px;width:100%;padding:0 15mm;text-align:center;">${headerTitle || ''}</div>`;
+      // Footer on every content page: credit (left) + page number (right).
+      opts.footerTemplate =
+        `<div style="${base}font-size:7px;width:100%;padding:0 12mm;display:flex;justify-content:space-between;align-items:center;">` +
+        `<span>${credit || ''}</span>` +
+        `<span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`;
     }
     await page.pdf(opts);
     console.log('wrote', output, '(' + mode + ')');

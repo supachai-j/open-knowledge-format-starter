@@ -82,6 +82,11 @@
 .okf-toc-card svg.ico { width: 26px; height: 26px; color: #8b5cf6; display: block; margin-bottom: 0.45rem; }
 .okf-cover-meta br { line-height: 2; }
 
+/* dedicated Table-of-Contents page */
+.okf-tocpage strong { display: block; margin: 1.1rem 0 0.1rem; color: #8b5cf6; font-size: 1.02rem; }
+.okf-tocpage ul { margin-top: 0.15rem; }
+@media print { .okf-tocpage { page-break-before: always; page-break-after: always; } }
+
 /* language switch button injected into the top menu bar */
 #okf-lang { font-weight: 700; }
 

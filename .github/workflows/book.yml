@@ -55,17 +55,17 @@ jobs:
           # Two passes (clean full-bleed cover + header/footer body), then stitch
           # cover page 1 + body pages 2..N so the cover stays free of header/footer.
           gen() {
-            local src="$1" out="$2" title="$3" d
+            local src="$1" out="$2" title="$3" credit="$4" d
             d="$(mktemp -d)"
-            node tools/print-pdf.js "$src" "$d/cover.pdf" ""       cover || return 1
-            node tools/print-pdf.js "$src" "$d/body.pdf"  "$title" body  || return 1
+            node tools/print-pdf.js "$src" "$d/cover.pdf" ""       cover ""        || return 1
+            node tools/print-pdf.js "$src" "$d/body.pdf"  "$title" body  "$credit" || return 1
             pdfseparate "$d/body.pdf" "$d/p-%04d.pdf"
             rm -f "$d/p-0001.pdf"                       # drop body's page 1 (use the clean cover instead)
             pdfunite "$d/cover.pdf" $(ls "$d"/p-*.pdf | sort) "$out"
             rm -rf "$d"
           }
-          gen "$PWD/book/book/print.html"    "$PWD/book/book/okf-manual-th.pdf"     "คู่มือ Open Knowledge Format (OKF)" || true
-          gen "$PWD/book-en/book/print.html" "$PWD/book/book/en/okf-manual-en.pdf" "The Open Knowledge Format (OKF) Handbook" || true
+          gen "$PWD/book/book/print.html"    "$PWD/book/book/okf-manual-th.pdf"     "คู่มือ Open Knowledge Format (OKF)" "เรียบเรียง Supachai Jaturaprom [TumEz] · เขียนโดย Claude Code — Opus 4.8 (AI)" || true
+          gen "$PWD/book-en/book/print.html" "$PWD/book/book/en/okf-manual-en.pdf" "The Open Knowledge Format (OKF) Handbook" "Compiled by Supachai Jaturaprom [TumEz] · Written by Claude Code — Opus 4.8 (AI)" || true
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

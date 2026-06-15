@@ -1,40 +1,39 @@
-# Summary
+<div class="okf-tocpage">
 
-[Preface](./README.md)
-[Table of Contents](./toc.md)
+# Table of Contents
 
-# Part 1 — Meet OKF
+**Part 1 — Meet OKF**
 
 - [What is OKF](./part1/what-is-okf.md)
 - [Why OKF (vs. RAG)](./part1/why-okf.md)
 - [History of Knowledge Bases](./part1/history.md)
 - [Core concepts you should know](./part1/foundations.md)
 
-# Part 2 — Getting Started
+**Part 2 — Getting Started**
 
 - [Install](./part2/install.md)
 - [Your first knowledge base](./part2/first-kb.md)
 - [Project layout](./part2/project-layout.md)
 
-# Part 3 — Core Concepts
+**Part 3 — Core Concepts**
 
 - [Bundle, Concept, and Concept ID](./part3/concepts.md)
 - [Frontmatter (metadata)](./part3/frontmatter.md)
 - [Linking into a knowledge graph](./part3/linking.md)
 - [Reserved files: index.md and log.md](./part3/reserved-files.md)
 
-# Part 4 — Everyday Operations
+**Part 4 — Everyday Operations**
 
 - [Ingest: adding knowledge to the wiki](./part4/ingest.md)
 - [Query and Search](./part4/query-search.md)
 - [Adding and editing concepts](./part4/authoring.md)
 - [Validate and Visualize](./part4/validate-viz.md)
 
-# Part 5 — Authoring Well
+**Part 5 — Authoring Well**
 
 - [Best practices and anti-patterns](./part5/best-practices.md)
 
-# Part 6 — Enterprise
+**Part 6 — Enterprise**
 
 - [Architecture overview](./part6/architecture.md)
 - [Self-hosted deployment](./part6/self-host.md)
@@ -42,9 +41,11 @@
 - [Search at scale and semantic](./part6/scaling-search.md)
 - [Security and governance](./part6/security.md)
 
-# Appendix
+**Appendix**
 
 - [Tools reference (CLI)](./appendix/tools.md)
 - [FAQ](./appendix/faq.md)
 - [Glossary](./appendix/glossary.md)
 - [References](./appendix/references.md)
+
+</div>
