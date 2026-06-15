@@ -29,3 +29,14 @@
   if (document.readyState !== 'loading') add();
   else document.addEventListener('DOMContentLoaded', add);
 })();
+
+// Fill the cover's "updated" date (ISO, language-neutral) on web and when printing to PDF.
+(function () {
+  function setDate() {
+    var el = document.getElementById('okf-date');
+    if (!el) return;
+    try { el.textContent = new Date().toISOString().slice(0, 10); } catch (e) {}
+  }
+  if (document.readyState !== 'loading') setDate();
+  else document.addEventListener('DOMContentLoaded', setDate);
+})();

@@ -1,5 +1,6 @@
 <div class="okf-cover">
 <svg class="okf-net" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g stroke="#fff" stroke-width="1.2" fill="#fff"><line x1="80" y1="60" x2="220" y2="140"/><line x1="220" y1="140" x2="380" y2="80"/><line x1="380" y1="80" x2="540" y2="170"/><line x1="540" y1="170" x2="700" y2="90"/><line x1="220" y1="140" x2="300" y2="250"/><line x1="540" y1="170" x2="480" y2="260"/><line x1="380" y1="80" x2="620" y2="220"/><circle cx="80" cy="60" r="6"/><circle cx="220" cy="140" r="8"/><circle cx="380" cy="80" r="7"/><circle cx="540" cy="170" r="8"/><circle cx="700" cy="90" r="6"/><circle cx="300" cy="250" r="6"/><circle cx="480" cy="260" r="6"/><circle cx="620" cy="220" r="7"/></g></svg>
+<div class="okf-cover-logo"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="13" r="6" fill="#fff"/><circle cx="13" cy="46" r="6" fill="#fff"/><circle cx="51" cy="46" r="6" fill="#fff"/><g stroke="#fff" stroke-width="2.5" opacity="0.85"><line x1="32" y1="13" x2="13" y2="46"/><line x1="32" y1="13" x2="51" y2="46"/><line x1="13" y1="46" x2="51" y2="46"/></g></svg></div>
 <div class="okf-cover-badge">OKF v0.1 · English Handbook</div>
 <h1 class="okf-cover-title">Open Knowledge Format<small>Build an AI-maintained knowledge base — from beginner to enterprise</small></h1>
 <p class="okf-cover-sub">A knowledge base stored as plain Markdown files that humans and AI agents can read, write, and use together.</p>
@@ -8,6 +9,7 @@
 <a class="okf-btn" href="./okf-manual-en.pdf">📄 Download PDF</a>
 <a class="okf-btn" href="./viz-example.html">🕸 See an example graph</a>
 </div>
+<div class="okf-cover-meta">by <strong>Supachai-ja</strong> · Updated <span id="okf-date">2026-06-15</span> · OKF v0.1</div>
 </div>
 
 # Preface
