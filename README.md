@@ -25,8 +25,10 @@ wiki/                ← Layer 2: the OKF bundle (agent-maintained concepts)
   log.md             ← reserved: append-only change log
   tables/ datasets/ metrics/ playbooks/ references/   ← example concepts (replace with yours)
   viz.html           ← generated single-file graph viewer (libs inlined; air-gap)
-tools/               ← validate · viz (air-gap) · index (BM25) · embed (Ollama) · search (hybrid RRF) · lease (concurrency)
+tools/               ← init · validate · viz (air-gap) · index (BM25) · embed (Ollama) · search (hybrid RRF) · lease
   vendor/            ← Cytoscape + marked (MIT), inlined into viz.html for offline use
+skill/okf/           ← installable Claude Code skill (SKILL.md) — `install.sh` bundles it with the tools
+install.sh           ← install the skill globally (~/.claude/skills) or per-project
 server/              ← okf_mcp_server.py — self-hostable MCP access layer for agents
 deploy/              ← docker-compose (gitea + MCP + TLS proxy) for on-prem self-hosting
 .gitea/ ci/          ← conformance CI gate (Gitea Actions / GitLab CI)
@@ -49,6 +51,22 @@ python3 tools/okf-viz.py               # → writes wiki/viz.html, open it in an
 4. New concepts start from **[tools/concept-template.md](tools/concept-template.md)**.
 
 Full walkthrough (EN/TH): **[docs/USAGE.md](docs/USAGE.md)** · Authoring rules: **[docs/GUIDELINES.md](docs/GUIDELINES.md)**
+
+## Install as a Claude Code skill
+
+Package the whole capability as an installable skill so **any** project/session can create and operate
+OKF bundles — no need to be inside this repo.
+
+```bash
+./install.sh                 # global  → ~/.claude/skills/okf  (every project)
+./install.sh --project       # project → ./.claude/skills/okf  (current repo only)
+./install.sh --dir <path>    # custom location
+./install.sh --uninstall     # remove
+```
+
+The installer bundles `skill/okf/SKILL.md` with all pure-Python tools + the vendored viewer libs into a
+self-contained skill directory. Then, in any project: *"init an OKF knowledge base here"* → the skill runs
+`okf-init.py` to scaffold a conformant bundle, and you ingest/query/validate/visualize from there.
 
 ## Using the skill (Claude Code)
 
