@@ -41,12 +41,19 @@ jobs:
       - name: Generate PDFs (best-effort)
         continue-on-error: true
         run: |
+          # Thai fonts MUST be present on the runner, else Chrome falls back to a
+          # font without Thai glyphs and the Thai PDF renders broken. fonts-thai-tlwg
+          # guarantees Thai coverage; fonts-noto-* match the on-page font + emoji.
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-thai-tlwg fonts-noto-core fonts-noto-color-emoji \
+            || sudo apt-get install -y -qq fonts-thai-tlwg
+          sudo fc-cache -f >/dev/null 2>&1 || true
           CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium-browser || command -v chromium || true)"
+          # --virtual-time-budget lets the Google-Fonts web font + layout settle before printing.
+          FLAGS="--headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --no-pdf-header-footer --virtual-time-budget=20000 --run-all-compositor-stages-before-draw"
           if [ -n "$CHROME" ]; then
-            "$CHROME" --headless=new --no-sandbox --disable-gpu --no-pdf-header-footer \
-              --print-to-pdf="$PWD/book/book/okf-manual-th.pdf" "file://$PWD/book/book/print.html" || true
-            "$CHROME" --headless=new --no-sandbox --disable-gpu --no-pdf-header-footer \
-              --print-to-pdf="$PWD/book/book/en/okf-manual-en.pdf" "file://$PWD/book-en/book/print.html" || true
+            "$CHROME" $FLAGS --print-to-pdf="$PWD/book/book/okf-manual-th.pdf" "file://$PWD/book/book/print.html" || true
+            "$CHROME" $FLAGS --print-to-pdf="$PWD/book/book/en/okf-manual-en.pdf" "file://$PWD/book-en/book/print.html" || true
           else
             echo "No Chrome found — skipping PDF generation (the in-book print page still works)."
           fi
