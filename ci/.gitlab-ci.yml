@@ -1,0 +1,19 @@
+# OKF conformance gate for self-hosted GitLab CE + runner.
+# Point your project's CI config path at ci/.gitlab-ci.yml (Settings → CI/CD),
+# and require the `validate` job in merge-request approval rules.
+stages: [validate]
+
+okf-conformance:
+  stage: validate
+  image: python:3.13-slim
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH != "main"'
+  script:
+    - python3 tools/okf-validate.py          # blocks the MR on failure
+    - python3 tools/okf-index.py build
+    - python3 tools/okf-viz.py --name "Self-OKF Wiki"
+  artifacts:
+    paths:
+      - wiki/viz.html
+    expire_in: 1 week

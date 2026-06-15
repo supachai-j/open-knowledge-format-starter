@@ -1,0 +1,55 @@
+# Internal, self-hosted OKF stack: git server + MCP access layer + TLS/auth proxy.
+# All on one internal network; nothing is exposed publicly. Air-gap friendly.
+services:
+
+  # 1) Source of truth — self-hosted git (Gitea). Swap for GitLab CE if preferred.
+  gitea:
+    image: gitea/gitea:1.22
+    environment:
+      GITEA__server__ROOT_URL: https://git.internal.example/
+      GITEA__service__DISABLE_REGISTRATION: "true"
+    volumes:
+      - gitea-data:/data
+    networks: [okf]
+    restart: unless-stopped
+
+  # 2) Access layer — the OKF MCP server every agent/session connects to.
+  okf-mcp:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    environment:
+      OKF_GIT_REMOTE: ${OKF_GIT_REMOTE}        # e.g. http://gitea:3000/okf/knowledge.git
+      OKF_BASE_BRANCH: main
+      OKF_READONLY: ${OKF_READONLY:-0}         # set 1 for reader-only replicas
+      OKF_GIT_PUSH: "1"
+      OKF_GITEA_API: ${OKF_GITEA_API}          # http://gitea:3000/api/v1
+      OKF_GITEA_TOKEN: ${OKF_GITEA_TOKEN}
+      OKF_GITEA_OWNER: ${OKF_GITEA_OWNER}
+      OKF_GITEA_REPO: ${OKF_GITEA_REPO}
+    volumes:
+      - okf-repo:/data/repo
+    networks: [okf]
+    depends_on: [gitea]
+    restart: unless-stopped
+
+  # 3) TLS + auth boundary in front of the MCP endpoint (token/OIDC/mTLS).
+  proxy:
+    image: caddy:2
+    ports:
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    networks: [okf]
+    depends_on: [okf-mcp]
+    restart: unless-stopped
+
+volumes:
+  gitea-data:
+  okf-repo:
+  caddy-data:
+
+networks:
+  okf:
+    driver: bridge

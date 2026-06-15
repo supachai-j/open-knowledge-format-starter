@@ -1,0 +1,28 @@
+# OKF conformance gate for a self-hosted Gitea Actions runner.
+# Enable branch protection on `main` requiring this check, so non-conformant
+# bundles can never merge. (GitHub Actions syntax — this also runs on GitHub.)
+name: okf-conformance
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Validate OKF conformance (blocks merge on failure)
+        run: python3 tools/okf-validate.py
+      - name: Rebuild search index
+        run: python3 tools/okf-index.py build
+      - name: Regenerate viewer
+        run: python3 tools/okf-viz.py --name "Self-OKF Wiki"
+      - name: Upload viewer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: okf-viz
+          path: wiki/viz.html

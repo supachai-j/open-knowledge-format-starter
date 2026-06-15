@@ -1,0 +1,15 @@
+# TLS termination + auth boundary for the internal MCP endpoint.
+# Agents connect to https://okf.internal.example/mcp with a bearer token.
+okf.internal.example {
+	# Internal CA / self-signed for air-gapped sites:
+	#   tls /etc/caddy/okf.crt /etc/caddy/okf.key
+	# Or mutual TLS (service-to-service):
+	#   tls { client_auth { mode require_and_verify trusted_ca_cert_file /etc/caddy/internal-ca.crt } }
+
+	# Minimal bearer-token gate. For SSO, replace with forward_auth to an OIDC proxy
+	# (e.g. oauth2-proxy) and map the verified identity to reader/proposer/curator.
+	@noauth not header Authorization "Bearer {$OKF_TOKEN}"
+	respond @noauth "Unauthorized" 401
+
+	reverse_proxy okf-mcp:8765
+}

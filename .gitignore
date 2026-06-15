@@ -11,6 +11,12 @@ __pycache__/
 .venv/
 venv/
 
+# Generated search index (CI / the MCP server rebuild it on demand)
+**/.okf-index.json
+
+# Local deploy secrets
+deploy/.env
+
 # Raw sources are often large or private — keep the folder, ignore real contents.
 # Comment these out if you WANT to version your sources.
 raw/*
